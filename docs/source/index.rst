@@ -12,6 +12,7 @@ Contents
 
 .. toctree::
 
-   explanation
+   important_concepts
+   tutorials
+   how-to-guides
    usage
-   api

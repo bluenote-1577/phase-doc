@@ -1,4 +1,4 @@
-Explanation
+Important concepts
 =====
 
 Topic 1
