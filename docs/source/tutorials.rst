@@ -1,14 +1,9 @@
 Tutorials
 =========
 
-Test :doc:`tutorials/tut1`
------------------------------------
-
-This tutorial goes over floria's inputs and outputs by running it on simple test data and going through the results. 
-
-Tutorial 2:  
------------
+The below tutorials give step-by-step directions for running floria and also for learning about concepts used by floria. 
 
 .. toctree::
-
    tutorials/tut1
+   tutorials/tut2
+   tutorials/tut3

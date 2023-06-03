@@ -1,12 +1,17 @@
 Important concepts
-=====
+=================
 
-Topic 1
+What is floria?
+--------------
+
+What is a "strain"?
+------------------
+
+What floria can and can not do
+-----------------------------
+
+Inputs to floria
 ------------
 
-Test
-
-Topic 2
+Outputs of floria
 ----------------
-
-Test

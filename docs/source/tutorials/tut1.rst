@@ -1,4 +1,5 @@
-Tutorial 1: introduction to floria on simple data
+Tutorial 1: introduction to floria outputs
 ================================================
 
-Test
+This minimal tutorial goes over floria's inputs and outputs by running floria on toy data. 
+
