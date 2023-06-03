@@ -1,8 +1,6 @@
 Explanation
 =====
 
-.. _explanation:
-
 Topic 1
 ------------
 
