@@ -18,7 +18,7 @@ See the github repository TODO for installation instructions. In summary:
 
 Basic run
 ---------
-Assuming floria is installed and is in PATH (i.e. typing ``floria -h`` works):
+If you have `rust <http://www.python.org/>`_ installed (version > 1.63) and basic linux dependencies present, the following should work. 
 
 .. code-block:: sh
 
@@ -26,8 +26,8 @@ Assuming floria is installed and is in PATH (i.e. typing ``floria -h`` works):
    git clone https://github.com/bluenote-1577/floria
    cd floria
    
-   # to install on linux, uncomment and run the command below 
-   #cargo install --path . --root ~/.cargo
+   # see github for installation instructions if you're not on linux/don't have rust installed
+   cargo install --path . --root ~/.cargo
    
    floria -b tests/test_long.bam -v tests/test.vcf -r tests/MN-03.fa -o example_output
    ls example_output
