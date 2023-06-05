@@ -30,6 +30,6 @@ Contents
 
 .. toctree::
    quick_start
-   important_concepts
+   introduction
    tutorials
    how-to-guides
