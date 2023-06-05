@@ -15,4 +15,4 @@ Contents
    important_concepts
    tutorials
    how-to-guides
-   usage
+   quick_start
