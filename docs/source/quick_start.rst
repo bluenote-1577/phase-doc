@@ -25,4 +25,4 @@ Basic run
    glopp -b tests/test_long.bam -v tests/test.vcf -r tests/MN-03.fa -o example_output
    ls example_output
    
-Once floria runs successfully, it should exit without any errors and you should see results in the ``example_output`` folder. See the tutorials, guides, and importan
+Once floria runs successfully, it should exit without any errors and you should see results in the ``example_output`` folder. See the :doc:`tutorials` , :doc:`guides` , and :doc:`important_concepts` pages to learn about how to use floria effectively.  
