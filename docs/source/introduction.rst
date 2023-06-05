@@ -1,7 +1,7 @@
-Important concepts
+Introduction
 =================
 
-This page introduces a basic overview of how floria works and the important terms we will work with. 
+This page introduces a basic overview of how floria works and the problem it solves.
 
 What is floria?
 --------------
