@@ -14,8 +14,6 @@ The problem
 
 If we want to reconstruct the genomes in a metagenomic sample, we perform *metagenomic assembly* with software like MEGAHIT or metaflye. However, when heterogeneity is present, assemblies may become a mosaic of the different strains and do not represent an individual strain. 
 
-Recently, long, accurate PacBio HiFi reads give a promising solution to this problem, allowing for strain-level de novo assemblies. However, HiFi PacBio reads are more expensive than Nanopore or Illumina reads and may give lower throughputs. 
-
 One can also map the reads and call variants to understand variation within the sample. However, variant calling only gives a set of variants without any linkage information. That is, we can not guarantee which alleles reside physically on the same chromosome. This is the classical **haplotype phasing problem**. 
 
 The solution: phasing
