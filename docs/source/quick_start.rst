@@ -18,7 +18,7 @@ See the github repository TODO for installation instructions. In summary:
 
 Basic run
 ---------
-If you have `rust <http://www.python.org/>`_ installed (version > 1.63) and basic linux dependencies present, the following should work. 
+If you have `rust <https://www.rust-lang.org/tools/install>`_ installed (version > 1.60), basic linux commands present (gcc, g++, cmake), and are running linux, the following should work. Otherwise, check the github repository for more instructions. 
 
 .. code-block:: sh
 
