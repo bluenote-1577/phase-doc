@@ -28,7 +28,19 @@ floria solves this problem by **phasing** the reads in a metagenomic community. 
 Overview of floria's algorithm
 ------------------------------
 
-TODO put in figure here. 
+.. image:: img/method.png
+  :width: 600
+  :alt: floria algorithm diagram.
+
+The above diagram outlines floria's main steps. floria requires at minimum
+
+#.  A BAM file with reads mapped a set of contigs that we will try to phase and
+#.  A VCF file with SNP information (other variants will be ignored).
+#.  The fasta files for the contigs in the BAM file.
+
+Given the above information, floria first uses the VCF to index the mapped reads in the BAM file by SNPs. floria then groups the reads into overlapping blocks along the contig, and phases each of the blocks. It then constructs a graph with these blocks. We group together these blocks using graph algorithms with network flows to form our final **haplosets**, which we define to be groups of reads coming from the indistinguishable haplotypes. 
+
+The final output from floria are a collection of haplosets. We also provide SNP information along the haplosets (i.e. what is the concensus set of SNPs for this haploset?), as well as visualization and QC information. 
 
 What floria can and can not do
 -----------------------------
@@ -36,4 +48,11 @@ What floria can and can not do
 What floria can do:
 
 #. Efficient single-sample shotgun metagenomic phasing of short or long reads on entire communities
-#. 
+#. Phase up to 5 strains by default and more strains if specified
+
+What floria can not do:
+
+#.  Phase consistently at very low coverage. Less than 5x becomes quite difficult.
+#.  Too many strains at once. floria was designed to phase not more than single digit number of strains (5 by default).
+#.  Call SNPs or map reads. To generate your VCF + BAM, you need to map reads and call variants by yourself. 
+#.  floria does not give base-level assemblies. However, you can run an assembler on each of the output haplosets quite easily. 
