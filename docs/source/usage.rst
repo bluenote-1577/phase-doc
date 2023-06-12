@@ -26,18 +26,18 @@ For optional parameter descriptions, do ``floria -h``. For tuning floria's param
 Outputs
 ---------
 
-You can specify the output folder name with the ``-o results_folder_name`` option. The structure of the output directory is shown below.
+You can specify the output folder name with the ``-o out-dir`` option. The structure of the output directory is shown below.
 
 .. code-block:: sh
 
-    results
+    out-dir
     |   contig_ploidy_info.txt
     |   cmd.log
     |   (additional debugging folders/files)
     │
     └───contig1_in_bam
-    │   │   contig1_haplosets.txt
-    |   |   contig1_vartigs.txt
+    │   │   contig1.haplosets
+    |   |   contig1.vartigs
     │   │
     │   └───vartig_info
     │   |   │   0_hap.txt
@@ -56,14 +56,15 @@ You can specify the output folder name with the ``-o results_folder_name`` optio
         │   ...
 
 
-Each contig in the bam file is phased independently of the other contigs and has its own set of outputs. Below we describe the outputs for each contig. 
+Each contig in the bam file is phased independently of the other contigs and has its own set of outputs. Below we describe the outputs for each contig. For a deeper discussion of the output information and potential pitfalls, see :doc:`how-to-guides/htg2`. 
 
 Haplosets
 ^^^^^^^^
 
-For the contig with name ``contig1``, the ``contig1_haplosets.txt`` file is output and describes the strain-level haplosets (clusters of reads) for this contig. The file looks as follows:
+For the contig with name ``contig1``, the ``contig1.haplosets`` file is output and describes the strain-level haplosets (clusters of reads) for this contig. The file looks as follows:
 
 .. code-block:: sh
+
     >HAP0_out-dir/contig1   SNPRANGE:1-6    BASERANGE:772-5000    COV:49.371  ERR:0.075   HAPQ:47   REL_ERR:1.35
     read_name1  first_snp_covered   last_snp_covered
     read_name2  first_snp_covered   last_snp_covered
@@ -85,6 +86,32 @@ The lines with ``>`` give statistics about the haploset, and the lines below are
 
 #. ``HAPQ``: A number from 0-60 indicating the confidence (higher is better) that this haploset is **not a duplicated, spurious haploset**. Analogous to MAPQ from read mapping. HAPQ is **not** an estimate of phasing goodness, just like how MAPQ is different than a Smith-Waterman score.
 
-#. ``REL_ERR``: The relative error of this haploset compared to all haplosets within this contig. 1.35 means 35% higher than the average error, for example. 
+#. ``REL_ERR``: The relative error of this haploset compared to all haplosets within this contig. 1.35 means 35% higher than the average error (ERR), for example. 
 
 #. ``read_name1  first_snp_covered   last_snp_covered``: The name of the read and the first/last SNP covered by the read (inclusive). 
+
+Vartigs
+^^^^^^
+The ``contig1.vartigs`` file gives the **vartigs**, which are analogous to base-level contigs but only display the SNPs instead of the bases. 
+
+.. code-block:: sh
+
+    >HAP0_out-dir/contig1  SNPRANGE:1-6    BASERANGE:772-5000    COV:49.371  ERR:0.075   HAPQ:47   REL_ERR:1.35
+    ?11111
+    >HAP1_out-dir/contig1   SNPRANGE:7-11    BASERANGE:5055-6500    COV:25.012  ERR:0.050   HAPQ:15   REL_ERR:1.11
+    01111
+
+The line with ``>`` is the same as for the haplosets. 
+
+The line below indicates the consensus alleles on this haploset. ``0`` always indicates the reference allele, and ``1`` indicates the first alternate allele, ``2`` the second alternate allele, etc. ``?`` indicates this allele is not covered by any read. So for the strain represented by ``HAP0_out-dir/contig1``, the alleles are alternate for all SNPs between [2,6] except for the first SNP.
+
+Additional vartig info is available in the ``out-dir/contig/vartig_info/`` folder. For the vartig HAPX, X = 0,1,2,.. floria outputs a vartig information file `X_hap.txt` in the following format:
+
+.. code-block:: 
+    >HAP0_out-dir/contig1       SNPRANGE:1-6
+    1:770   ?       NA      
+    2:1022  1       1:1     
+    3:2007  1       0:1|1:2 
+    4:2034  1       1:3  
+
+The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each consensus allele is supported. Fore xample, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
