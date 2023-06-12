@@ -31,5 +31,6 @@ Contents
 .. toctree::
    quick_start
    introduction
+   usage
    tutorials
    how-to-guides
