@@ -52,13 +52,13 @@ What floria **can** do:
     *   Short-reads should at least be paired-end, 2x100bp at minimum (longer is more ideal)  
 
     *   Long-reads can either be HiFi accurate reads or even noisier reads (still works even when identity is < 90%).
-
-#.  Phase up to 5 strains by default and more strains if specified
+#.  Automatically detects how many strains are present, so no prior information is needed.
+#.  Phase up to 5 strains by default and more strains if specified.
 #.  QC metrics and phasing statistics to manually visualize and confirm putative phasings.
 
 What floria **can not** do:
 
 #.  Phase consistently at very low coverage. Less than 5x becomes quite difficult.
-#.  Too many strains at once. floria was designed to phase not more than single digit number of strains (5 by default).
+#.  Too many strains at once. floria was designed to phase not more than single digit number of strains (maximum 5 by default).
 #.  Call SNPs or map reads. To generate your VCF + BAM, you need to map reads and call variants by yourself. 
 #.  floria does not give base-level assemblies. However, you can run an assembler on each of the output haplosets quite easily. 
