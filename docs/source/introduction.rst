@@ -28,7 +28,7 @@ floria solves this problem by **phasing** the reads in a metagenomic community. 
 Overview of floria's algorithm
 ------------------------------
 
-.. image:: img/method.png
+.. image:: img/method_diagram.png
   :width: 600
   :alt: floria algorithm diagram.
 
@@ -38,19 +38,25 @@ The above diagram outlines floria's main steps. floria requires at minimum
 #.  A VCF file with SNP information (other variants will be ignored).
 #.  The fasta files for the contigs in the BAM file.
 
-Given the above information, floria first uses the VCF to index the mapped reads in the BAM file by SNPs. floria then groups the reads into overlapping blocks along the contig, and phases each of the blocks. It then constructs a graph with these blocks. We group together these blocks using graph algorithms with network flows to form our final **haplosets**, which we define to be groups of reads coming from the indistinguishable haplotypes. 
+Given the above information, floria first uses SNP information in the VCF to annotate the reads in the BAM. floria then groups the reads into overlapping blocks along the contig, and phases each of the blocks. We group together these blocks using graph algorithms with network flows to form our final **haplosets**, which we define to be groups of reads coming from the indistinguishable haplotypes. 
 
-The final output from floria are a collection of haplosets. We also provide SNP information along the haplosets (i.e. what is the concensus set of SNPs for this haploset?), as well as visualization and QC information. 
+The final output from floria are a collection of haplosets. We also provide SNP information along the haplosets (i.e. what are the likely SNPs for the strain represented by the haploset?), as well as visualization and QC information. 
 
 What floria can and can not do
 -----------------------------
 
-What floria can do:
+What floria **can** do:
 
-#. Efficient single-sample shotgun metagenomic phasing of short or long reads on entire communities
-#. Phase up to 5 strains by default and more strains if specified
+#. Efficient single-sample shotgun metagenomic phasing of short or long-reads on entire communities
 
-What floria can not do:
+    *   Short-reads should at least be paired-end, 2x100bp at minimum (longer is more ideal)  
+
+    *   Long-reads can either be HiFi accurate reads or even noisier reads (still works even when identity is < 90%).
+
+#.  Phase up to 5 strains by default and more strains if specified
+#.  QC metrics and phasing statistics to manually visualize and confirm putative phasings.
+
+What floria **can not** do:
 
 #.  Phase consistently at very low coverage. Less than 5x becomes quite difficult.
 #.  Too many strains at once. floria was designed to phase not more than single digit number of strains (5 by default).
