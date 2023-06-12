@@ -108,10 +108,11 @@ The line below indicates the consensus alleles on this haploset. ``0`` always in
 Additional vartig info is available in the ``out-dir/contig/vartig_info/`` folder. For the vartig HAPX, X = 0,1,2,.. floria outputs a vartig information file `X_hap.txt` in the following format:
 
 .. code-block:: 
+
     >HAP0_out-dir/contig1       SNPRANGE:1-6
     1:770   ?       NA      
     2:1022  1       1:1     
     3:2007  1       0:1|1:2 
     4:2034  1       1:3  
 
-The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each consensus allele is supported. Fore xample, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
+The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each consensus allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
