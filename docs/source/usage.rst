@@ -31,7 +31,7 @@ You can specify the output folder name with the ``-o out-dir`` option. The struc
 .. code-block:: sh
 
     out-dir
-    |   contig_ploidy_info.txt
+    |   contig_ploidy_info.tsv
     |   cmd.log
     |   (additional debugging folders/files)
     │
@@ -56,7 +56,36 @@ You can specify the output folder name with the ``-o out-dir`` option. The struc
         │   ...
 
 
-Each contig in the bam file is phased independently of the other contigs and has its own set of outputs. Below we describe the outputs for each contig. For a deeper discussion of the output information and potential pitfalls, see :doc:`how-to-guides/htg2`. 
+Each contig in the bam file is phased independently of the other contigs and has its own set of outputs. Below we describe the outputs for each contig. 
+
+For a deeper discussion of the output information and potential pitfalls, see :doc:`how-to-guides/htg2`. 
+
+Contig ploidy information
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``out-dir/contig_ploidy_info.tsv`` file is extremely useful for characterizing the strain heterogeneity of your community at a glance. 
+
+.. code-block:: sh
+
+    contig  average_local_ploidy    average_global_ploidy   approximate_coverage_ignoring_indels    total_vartig_bases_covered    average_local_ploidy_min1hapq   average_global_ploidy_min1hapq
+    contig1   1.706   0.971   17.739  194971  1.680   0.741
+    contig2   2.509   2.351   69.065  3438158 2.437   2.231
+    ...
+#. ``contig``: Contig name
+#. ``average_local_ploidy``: The local ploidy is the estimated ploidy of the blocks (see algorithm details in :doc:`introduction`) given that that the block passes floria's filtering thresholds. This is always greater than 1. 
+#. ``average_global_ploidy``: The global ploidy is the estimated ploidy is the average SNP multiplicity over the contig. The SNP multiplicity is how many times a SNP is covered by haplosets. This can be < 1 because blocks which have 0 ploidy, i.e. do not have any SNPs or reads passing filters, are included in this metric. 
+#. ``approximate_coverage_ignoring_indels``: The average coverage of the SNPs given that the SNP is covered by at least one read. Reads with many indels bias this metric down slightly because they may not cover SNPs properly. 
+#. ``total_vartig_bases_covered``: How many bases are covered by vartigs. For example, if a contig has 4 strains, this will be able 4 times the contig length. However, it will be lower then certain parts of the contig are not covered by some of the strains. 
+#. ``..._min1hapq``: The same statistics, but ignoring vartigs with 0 HAPQ.
+
+Interpreting the ploidy information
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In our experience, the most useful metric is the ``average_global_ploidy`` metric, which gives a good sense of how many strains there are. Short-reads tend to capture less strains, so a rough rule of thumb is that ``average_global_ploidy`` = 2.5 means there are probably 3 strains present for short reads.
+
+The ``total_vartig_bases_covered`` metric is also important. Occasionally, you will see a contig with high ploidies, but ``total_vartig_bases_covered`` small. This may indicate mismappings or false strains appearing due to repetitive elements. If ``total_vartig_bases_covered`` is large, you probably have multiple strains present. 
+
+For example, contig1 is a genome of size > 2,000,000 bases. Its global ploidy is 1, which seems to indicate that there's only 1 strain present. Furthermore, the number of bases covered is much less than the genome. Therefore, it is likely that the variants and mappings are spurious, or there is only a little bit of heterogeneity. contig2 is much more likely to be a multi-strain contig. 
 
 Haplosets
 ^^^^^^^^
@@ -115,4 +144,4 @@ Additional vartig info is available in the ``out-dir/contig/vartig_info/`` folde
     3:2007  1       0:1|1:2 
     4:2034  1       1:3  
 
-The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each consensus allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
+The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
