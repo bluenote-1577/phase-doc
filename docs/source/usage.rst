@@ -23,6 +23,8 @@ Mandatory inputs
 
 For optional parameter descriptions, do ``floria -h``. For tuning floria's parameters to your problem of interest, see :doc:`how-to-guides/htg1`. 
 
+.. _usage-outputs:
+
 Outputs
 ---------
 
@@ -76,7 +78,7 @@ The ``out-dir/contig_ploidy_info.tsv`` file is extremely useful for characterizi
 #. ``average_local_ploidy``: The local ploidy is the estimated ploidy of the blocks (see algorithm details in :doc:`introduction`) given that that the block passes floria's filtering thresholds. This is always greater than 1. 
 #. ``average_global_ploidy``: The global ploidy is the estimated ploidy is the average SNP multiplicity over the contig. The SNP multiplicity is how many times a SNP is covered by haplosets. This can be < 1 because blocks which have 0 ploidy, i.e. do not have any SNPs or reads passing filters, are included in this metric. 
 #. ``approximate_coverage_ignoring_indels``: The average coverage of the SNPs given that the SNP is covered by at least one read. Reads with many indels bias this metric down slightly because they may not cover SNPs properly. 
-#. ``total_vartig_bases_covered``: How many bases are covered by vartigs. For example, if a contig has 4 strains, this will be able 4 times the contig length. However, it will be lower then certain parts of the contig are not covered by some of the strains. 
+#. ``total_vartig_bases_covered``: How many bases are covered by vartigs. For example, if a contig has 4 strains, this will be about 4 times the contig length. However, it will be lower then certain parts of the contig are not covered by some of the strains. 
 #. ``..._min1hapq``: The same statistics, but ignoring vartigs with 0 HAPQ.
 
 Interpreting the ploidy information
