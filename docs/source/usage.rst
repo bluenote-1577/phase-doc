@@ -1,6 +1,8 @@
 Usage
 =================
+
 .. code-block:: sh
+
     # required options
     floria -b sorted-and-indexed.bam -v vcf-with-header.vcf -r indexed-contigs.fa
 
@@ -26,6 +28,7 @@ Outputs
 ---------
 
 .. code-block:: sh
+
     results
     |   contig_ploidy_info.txt
     |   cmd.log
