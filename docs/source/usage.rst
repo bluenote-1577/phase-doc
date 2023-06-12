@@ -147,3 +147,12 @@ Additional vartig info is available in the ``out-dir/contig/vartig_info/`` folde
     4:2034  1       1:3  
 
 The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
+
+Read output
+----------
+
+If the option ``--output-reads`` is specified, then reads will be output in the ``out-dir/long_reads`` or ``out-dir/short_reads`` folders. We put paired-end reads in the short_reads folder, and single-end reads in the long-read folders (even if you use short single-end reads). 
+
+For example, the read ``0_part.fastq`` are all of the reads in fastq format for the 0th haplotype, or HAP0 as labelled in the other files. 
+
+Importantly, the **long-reads are trimmed against the haplosets**. This means the following: consider a read of length 1500 that is mapped from [200,1700] on the contig. If this read is in HAP0, and HAP0's BASERANGE is 500-1000, we only output the read's bases that are mapped between [500,1000] on the genome. This is so that we don't get poor assemblies near the edges of the haplosets. 
