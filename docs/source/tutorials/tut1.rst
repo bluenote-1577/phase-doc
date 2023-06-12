@@ -3,7 +3,7 @@ Tutorial 1: running floria and visualizing its outputs
 
 This minimal tutorial goes over floria's inputs and outputs by running floria on toy data. 
 
-We will assume that you've installed floria. See the :doc:`quick_start` page if you have not installed floria. We will assume you have the following commands working properly. 
+We will assume that you've installed floria. See the :doc:`../quick_start` page if you have not installed floria. We will assume you have the following commands working properly. 
 
 .. code-block:: sh
 
@@ -32,7 +32,7 @@ Output log
 
 Depending on your version of floria, you should see something like the following after running the command. 
 
-.. code-block:: 
+.. code-block:: sh
 
     2023-06-12T23:33:40.561Z INFO  [floria::file_reader] 33,50,66 non-hard clipped read length percentiles: 9943, 13066, 16494. If -l is not set, estimated -l is set to 16494.
     2023-06-12T23:33:40.561Z INFO  [floria::file_reader] If -e is not set, estimated -e is set to 0.04081632653061224.
