@@ -61,7 +61,8 @@ Each contig in the bam file is phased independently of the other contigs and has
 For a deeper discussion of the output information and potential pitfalls, see :doc:`how-to-guides/htg2`. 
 
 Contig ploidy information
-^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
+
 
 The ``out-dir/contig_ploidy_info.tsv`` file is extremely useful for characterizing the strain heterogeneity of your community at a glance. 
 
@@ -88,7 +89,7 @@ The ``total_vartig_bases_covered`` metric is also important. Occasionally, you w
 For example, contig1 is a genome of size > 2,000,000 bases. Its global ploidy is 1, which seems to indicate that there's only 1 strain present. Furthermore, the number of bases covered is much less than the genome. Therefore, it is likely that the variants and mappings are spurious, or there is only a little bit of heterogeneity. contig2 is much more likely to be a multi-strain contig. 
 
 Haplosets
-^^^^^^^^
+--------
 
 For the contig with name ``contig1``, the ``contig1.haplosets`` file is output and describes the strain-level haplosets (clusters of reads) for this contig. The file looks as follows:
 
@@ -120,7 +121,8 @@ The lines with ``>`` give statistics about the haploset, and the lines below are
 #. ``read_name1  first_snp_covered   last_snp_covered``: The name of the read and the first/last SNP covered by the read (inclusive). 
 
 Vartigs
-^^^^^^
+------
+
 The ``contig1.vartigs`` file gives the **vartigs**, which are analogous to base-level contigs but only display the SNPs instead of the bases. 
 
 .. code-block:: sh
