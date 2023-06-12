@@ -4,7 +4,9 @@ Quick start
 Install
 -------
 
-See the github repository TODO for installation instructions. In summary:
+See the github repository https://github.com/bluenote-1577/floria for installation instructions. 
+
+In summary:
 
 #. You can compile floria on linux and mac. 
 
@@ -18,7 +20,7 @@ See the github repository TODO for installation instructions. In summary:
 
 Basic run
 ---------
-If you have `rust <https://www.rust-lang.org/tools/install>`_ installed (version > 1.60), basic linux commands present (gcc, g++, cmake), and are running linux, the following should work. Otherwise, check the github repository for more instructions. 
+If you have `rust <https://www.rust-lang.org/tools/install>`_ installed (version > 1.63), basic linux tools present (gcc, g++, cmake), and are running linux, the following should work. Otherwise, check the github repository for more instructions. 
 
 .. code-block:: sh
 
@@ -28,8 +30,26 @@ If you have `rust <https://www.rust-lang.org/tools/install>`_ installed (version
    
    # see github for installation instructions if you're not on linux/don't have rust installed
    cargo install --path . --root ~/.cargo
+   floria -h
+
+   # you can also download a binary if you're on a linux x86-64 architecture
+   wget https://github.com/bluenote-1577/floria/releases/download/latest/floria
+   chmod +x floria 
+   ./floria -h
    
+If you've cloned the github repository, try the following command to run floria. 
+
+.. code-block:: sh
+
+   # clone the repository if you have not done so
+   #git clone https://github.com/bluenote-1577/floria
+   #cd floria
+
    floria -b tests/test_long.bam -v tests/test.vcf -r tests/MN-03.fa -o example_output
    ls example_output
    
-Once floria runs successfully, it should exit without any errors and you should see results in the ``example_output`` folder. See the :doc:`tutorials`, :doc:`how-to-guides`, and :doc:`introduction` pages to learn about how to use floria effectively.  
+Once floria runs successfully, it should exit without any errors and you should see results in the ``example_output`` folder. 
+
+To learn more about how floria works, start with the :doc:`introduction` page and the :doc:`tutorials`, in particular, the first tutorial :doc:`tutorials/tut1` picks up from this page. For a deeper look at using floria effectively, see :doc:`how-to-guides`.
+
+
