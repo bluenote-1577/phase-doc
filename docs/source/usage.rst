@@ -1,4 +1,4 @@
-Usage
+Usage: input and output information
 =================
 
 .. code-block:: sh
