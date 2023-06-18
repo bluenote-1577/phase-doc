@@ -3,10 +3,10 @@ Tutorial 1: running floria and visualizing its outputs
 
 This minimal tutorial goes over floria's inputs and outputs by running floria on toy data. 
 
-Running floria and requirements
+Prerequisites and running floria
 ^^^^^^^^^^^^
 
-We will assume that you've installed floria. See the :doc:`../quick_start` page if you have not installed floria. Once floria is installed, run the following commands.
+We will assume that you've installed floria and took a look through :doc:`../introduction`. See the :doc:`../quick_start` page if you have not installed floria. Once floria is installed, run the following commands.
 
 .. code-block:: sh
 
@@ -85,13 +85,94 @@ The most important columns is the ``average_global_ploidy`` line, which gives a 
 
 As a sanity check, the ``total_vartig_bases_covered`` column gives 354838 bases, which is approximately 3 (the number of strains) times 120,000. Recall that we restricted our reads to lie within 1-120,000 along the contig. We'll see explain what a "vartig" is below. 
 
-NZ_CP081897.1.vartigs
+NZ_CP081897.1.haplosets
 **********************
 
-For the rest of the files, they are stored in ``example_output/NZ_CP081897.1``. floria outputs results for each individual contig in the bam file. Because we only have one contig, there is only one output folder. Let's start with the ``*.vartigs`` file. 
+For the rest of the files, they are stored in ``example_output/NZ_CP081897.1``. floria outputs results for each individual contig in the bam file. Because we only have one contig, there is only one output folder. Let's start with the ``NZ_CP081897.1.haplosets`` file. 
 
+The ``*.haplosets`` file is present for every contig phased. This describes the strain-level read clusters output by floria. 
 
+.. code-block:: sh
+    > head example_output/NZ_CP081897.1/NZ_CP081897.1.haplosets
+    ------------------------------------------------------------
+    >HAP0.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-15	BASERANGE:771-3416	COV:2.429	ERR:0.088	HAPQ:0	REL_ERR:1.591
+    nc1_20364	2	12
+    nc1_5047	3	15
+    nc1_13853	3	14
+    >HAP1.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-954	BASERANGE:771-119079	COV:49.374	ERR:0.075	HAPQ:47	REL_ERR:1.346
+    nc1_929	1	110
+    nc1_30767	1	59
+    nc1_35492	1	35
+    nc1_16553	1	26
+    nc1_35227	2	71
+    ...
 
+The first line with the ``>`` gives information about the haploset. Again, all of the flags are described in :ref:`usage-outputs`, but let's go over the important ones. 
+
+#. The first haploset is called ``HAP0``, and it covers the SNPs through [1,15] (inclusive interval).
+#. The bases it covers are [771,3416], which corresponds to SNPs [1,15].
+#. The ``COV`` is 2.429, so it is does not have high coverage. 
+#. The ``HAPQ`` is 0. 
+
+The rest of the lines indicate which reads are contained in the haploset, and what SNP positions each read covers. The first read covers [2,12], for example. 
+
+Interpreting the haploset information
+***********************************
+
+It looks like the first haploset is a small set containing only 3 long-reads, and not covering much of the genome. The low ``HAPQ`` is indicative that this phasing may be spurious. **HAPQ does not indicate if the phasing is good, just whether or not it may be spurious**. 
+
+#. By "spurious", we mean "Does this phasing really represent the existence of a strain?"
+#. By "good" we mean, "Are there errors in this phasing? e.g. are there switch errors?"
+
+.. note::
+
+    Switch errors are a specific type of common error that occurs in haplotype phasing 
+
+The technical details of how HAPQ is actually calculated means that it represents only the first interptation, not the second. So our HAPQ is 0; is this fair? Well, it turns out our reads have prefixes which indicate what strain they really came from (because we simulated our reads). As can be seen below:
+
+.. code-block:: sh
+    > cat example_output/NZ_CP081897.1/NZ_CP081897.1.haplosets
+    ------------------------------------------------------------
+    >HAP0.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-15	BASERANGE:771-3416	COV:2.429	ERR:0.088	HAPQ:0	REL_ERR:1.591
+    nc1_20364	2	12
+    nc1_5047	3	15
+    nc1_13853	3	14
+    >HAP1.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-954	BASERANGE:771-119079	COV:49.374	ERR:0.075	HAPQ:47	REL_ERR:1.346
+    nc1_929	1	110
+    nc1_30767	1	59
+    nc1_35492	1	35
+    nc1_16553	1	26
+    nc1_35227	2	71
+    ...
+    >HAP2.example_output/NZ_CP081897.1      CONTIG:NZ_CP081897.1    SNPRANGE:1-954  BASERANGE:771-119079    COV:23.742      ERR:0.019       HAPQ:38 REL_ERR:0.349
+    mn1_15098       1       16
+    mn1_2680        3       75
+    mn1_15393       3       48
+    mn1_14763       3       39
+    mn1_8191        3       26
+    ...
+    >HAP4.example_output/NZ_CP081897.1      CONTIG:NZ_CP081897.1    SNPRANGE:16-954 BASERANGE:3502-119079   COV:6.549       ERR:0.041       HAPQ:36 REL_ERR:0.744
+    pa1_5458        21      73
+    nc1_10985       22      23
+    nc1_35501       23      23
+    pa1_2856        24      111
+    pa1_272 33      202
+    pa1_3056        33      46
+    pa1_344 46      56
+    pa1_983 47      131
+    pa1_1945        53      251
+    pa1_127 53      75
+    pa1_2033        59      136
+    pa1_4379        67      73
+    ...
+
+``HAP0`` is really a false haplotype:
+
+#. ``HAP1`` is a much longer version of ``HAP0``, capturing the ``nc1`` strain. 
+#. ``HAP2`` captures the ``mn1`` strain.
+#.  ``HAP4`` (notice the skip; haplotype numbering can skip) captures the ``pa1`` strain, although some short ``nc1`` reads are mixed in. 
+
+so it's good we assumed 0 to the HAPQ. 
 
 
 
