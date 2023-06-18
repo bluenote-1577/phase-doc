@@ -3,6 +3,13 @@ Tutorial 1: running floria and visualizing its outputs
 
 This minimal tutorial goes over floria's inputs and outputs by running floria on toy data. 
 
+
+.. image:: ../img/tut1_vartigs.png
+  :width: 600
+  :alt: floria visualization example.
+
+
+
 Prerequisites and running floria
 ^^^^^^^^^^^^
 
@@ -21,8 +28,10 @@ We will assume that you've installed floria and took a look through :doc:`../int
 For visualization, you will need:
 
 #. `IGV <https://software.broadinstitute.org/software/igv/>`_ installed. 
-#. matplotlib, numpy, scipy, python3 installed.
+#. matplotlib, numpy, python3 installed for vartig visualization.
+#. samtools in PATH and pysam installed for IGV visualization. 
 
+Running ``pip install pysam numpy matplotlib`` should do the trick if you don't have these dependencies installed. samtools can easily be installed via ``conda`` or built manually, but make sure it is in PATH if you want to do IGV visualization. 
 
 Inputs
 ^^^^^
@@ -228,3 +237,61 @@ By default, floria only outputs read ids for the phased haplosets. If you want t
    floria --overwrite --output-reads -b tests/test_long.bam -v tests/test.vcf -r tests/MN-03.fa -o example_output
 
 and now the reads appear like ``example_output/NZ_CP081897.1/long_reads/2_part.txt``. These are the reads corresponding to HAP2. Importantly, these reads are **trimmed** against the haploset and may not represent the original reads. See :ref:`read-outputs` for more information. 
+
+Visualizing vartigs/haplosets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: ../img/tut1_vartigs.png
+  :width: 600
+  :alt: floria visualization example.
+
+To visualize your vartigs, we provide a script called ``visualize_vartigs.py`` in the following repository: https://github.com/bluenote-1577/vartig-utils. You will need numpy and matplotlib installed. Simply run:
+
+.. code-block:: sh
+    git clone https://github.com/bluenote-1577/vartig-utils
+    python vartig-utils/visualize_vartigs.py
+
+ You should see the above figure. In a nutshell:
+
+ #. Each bar represents a vartig with HAPQ > 0. 
+ #. The y-axis represents the COV for the vartig, and the x-axis represents the BASERANGE of the vartig.
+ #. The upper plot colors the vartig by alternate allele fraction. That is, what precentage of the vartig contains non ``0`` alleles. 
+ #. The lower plot colors the vartig by HAPQ. 
+
+ We have three true strains here, which are well represented by this plot. 
+
+ We've found the above visualization to be very useful in practice for confirming that a phasing is reasonable. If you have a consistent coverage level and alternate allele fraction, you can be confident that your phasing is reasonable. For example, the following picture is a phasing for a **real** nanopore community:
+
+.. image:: ../img/visualize-vartig-example.png
+  :width: 600
+  :alt: floria visualization example.
+
+Notice that alternate allele fraction is relatively constant and that coverage is consistent, even across broken vartigs. 
+
+Visualizing haplosets via IGV
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To visualize the actual reads in the haplosets instead of just the vartig, we provide the script ``floria/scripts/haplotag_dir.py``. This script outputs a bam file with **haplotagging information**, a field in the BAM record that indicates which phasing a read comes from. 
+
+.. code-block:: sh
+
+    python scripts/haplotag_output_dir.py -d example_output/ -b tests/test_long.bam -o haplotagged_example 
+    ls haplotagged_example.bam haplotagged_example.bam.bai
+
+For more in-depth information on how to use the IGV, see any tutorial out there. Briefly, once you have the IGV open, simply
+
+#. load the ``haplotagged_example.bam`` file and ``MN-03.fa`` as the reference.
+#. Right click the left panel, click "Group alignments by" and then "phase". 
+#. Right click the left panel, and choose "squished". 
+
+You should then see the following picture. 
+
+.. image:: ../img/tut1-groupby.png
+  :width: 600
+  :alt: floria IGV example.
+
+.. image:: ../img/tut1-haplotag.png
+  :width: 600
+  :alt: floria IGV example.
+
+The HAP number are shown on the left hand side. 
