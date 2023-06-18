@@ -12,6 +12,7 @@ When we have two distinct E. coli populations, our community contains two strain
 
 
 The problem  
+----------
 
 To reconstruct the genomes in a metagenomic sample, metagenomic assembly is carried out with software like MEGAHIT or metaflye. However, when heterogeneity is present, assemblies may become a composite of different strains and fail to represent an individual strain accurately.
 
@@ -61,7 +62,7 @@ What floria **can** do:
 What floria **can not** do:
 
 #.  Phase consistently at very low coverage. Less than 5x becomes quite difficult.
-#.  Guarantee long haplotypes. floria tries to give the longest possible *correct* haplotypes, but is not guaranteed to be contig length. 
+#.  Guarantee contig-length haplotypes. floria tries to give the longest possible *correct* haplotypes, but is not guaranteed to be contig length. 
 #.  Too many strains at once. floria was designed to phase not more than single digit number of strains (maximum 5 by default). 
 #.  Call SNPs or map reads. To generate your VCF + BAM, you need to map reads and call variants by yourself. 
 #.  floria does not give base-level assemblies. However, you can run an assembler on each of the output haplosets quite easily. 
