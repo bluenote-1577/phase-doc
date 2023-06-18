@@ -200,19 +200,31 @@ The header info in the vartig file is in the same format. However, instead of re
 #. The allele ``1`` represents the first alternate allele. ``2`` would represent the second, and so forth. 
 #. The allele ``?`` represents no reads in that haploset cover the allele, so it is unknown. 
 
-We truncated the vartigs in the above example, but HAP1 has almost all alleles ``1`` in the range [1,954], whereas HAP2 has ``0`` on almost all alleles. HAP4 is a mix of ``0`` and ``1``. This makes sense; it turns out **we took reads from the reference genome MN-03.fa for one of the strains**, so it makes sense that HAP2 is almost all reference (any ``1`` alleles for HAP2 would be errors). 
+We truncated the vartigs in the above output, but HAP1 has almost all alleles ``1`` in the range [1,954], whereas HAP2 has ``0`` on almost all alleles. HAP4 is a mix of ``0`` and ``1``. This makes sense; it turns out **we took reads from the reference genome MN-03.fa for the strains captured by HAP2**, so it makes sense that HAP2 is almost all reference (any ``1`` alleles for HAP2 would be errors). 
 
 .. note::
 
-    Notice that the ERR for the vartigs increase as the number of alternate alleles increase. This is called **reference-bias**; SNP calls are biased towards the reference, so true alternate alleles are called less often. 
+    Notice that the ERR for the vartigs increase as the number of alternate alleles increase. This is called **reference bias**; SNP calls are biased towards the reference, so true alternate alleles are called less often. 
 
 reads_without_snps.tsv
 ********************
 
 This file captures any reads that do not have SNPs present (e.g. reads that are too short) or are placed in regions without any SNPs. In our example, there are SNPs throughout the genome, so this file is empty. 
 
-Less important: ``vartig_info``
+vartig_info/hap*.txt
 ****************************
 
 For more information about the haplosets/vartigs, look at the files in ``example_output/NZ_CP081897.1/vartig_info/*``. These files give more information about how confident we are in each allele call for each vartig. See :ref:`usage-outputs`.
 
+
+Outputting reads
+***************
+
+By default, floria only outputs read ids for the phased haplosets. If you want the base-level reads, use the ``--output-reads`` option. If you look at ``example_output/NZ_CP081897.1/long_reads``, you'll see the folder is empty, but we can rerun floria:
+
+.. code-block:: sh
+
+   # need to specify --ovewrite and --output-reads
+   floria --overwrite --output-reads -b tests/test_long.bam -v tests/test.vcf -r tests/MN-03.fa -o example_output
+
+and now the reads appear like ``example_output/NZ_CP081897.1/long_reads/2_part.txt``. These are the reads corresponding to HAP2. Importantly, these reads are **trimmed** against the haploset and may not represent the original reads. See :ref:`read-outputs` for more information. 
