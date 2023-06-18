@@ -62,7 +62,7 @@ The "Total time ..." line indicates floria has exited successfully. A few lines 
 #. The second line indicates how we estimate the ``-e`` parameter, the baseline error rate. The user can also supply this. 
 #. The line "Final SNP error rate ..." describes the fraction of alleles that are discordant in your final outputs. 
 
-For understanding the ``-l`` and ``-e`` parameters, see :doc:`how-to-guides/htg1`. 
+For understanding the ``-l`` and ``-e`` parameters, see :doc:`../how-to-guides/htg1`. 
 
 floria's main outputs
 ^^^^^^^^^^^^^^^^^^^^^
@@ -93,6 +93,7 @@ For the rest of the files, they are stored in ``example_output/NZ_CP081897.1``. 
 The ``*.haplosets`` file is present for every contig phased. This describes the strain-level read clusters output by floria. 
 
 .. code-block:: sh
+
     > head example_output/NZ_CP081897.1/NZ_CP081897.1.haplosets
     ------------------------------------------------------------
     >HAP0.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-15	BASERANGE:771-3416	COV:2.429	ERR:0.088	HAPQ:0	REL_ERR:1.591
@@ -131,6 +132,7 @@ It looks like the first haploset is a small set containing only 3 long-reads, an
 The technical details of how HAPQ is actually calculated means that it represents only the first interptation, not the second. So our HAPQ is 0; is this fair? Well, it turns out our reads have prefixes which indicate what strain they really came from (because we simulated our reads). As can be seen below:
 
 .. code-block:: sh
+
     > cat example_output/NZ_CP081897.1/NZ_CP081897.1.haplosets
     ------------------------------------------------------------
     >HAP0.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-15	BASERANGE:771-3416	COV:2.429	ERR:0.088	HAPQ:0	REL_ERR:1.591
