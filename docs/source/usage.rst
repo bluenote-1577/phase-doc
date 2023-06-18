@@ -162,6 +162,8 @@ The ``total_vartig_bases_covered metric is also critical``. Occasionally, you ma
 For instance, consider contig1, which is a genome larger than 2,000,000 bases. Its global ploidy is 1, suggesting the presence of only one strain. Furthermore, the number of bases covered is considerably lower than the genome size. This indicates that the variants and mappings could be spurious, or there might be only slight heterogeneity. On the other hand, contig2 is more likely to be a multi-strain contig.
 
 
+.. _read-outputs:
+
 Read output
 ----------
 
