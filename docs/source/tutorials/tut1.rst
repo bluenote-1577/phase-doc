@@ -29,7 +29,7 @@ Inputs
 
 The provided files represent **a mixture of synthetic Klebsiella Pneumoniae reads** for **three different strains**. 
 
-``test_long.bam`` represent synthetic nanopore reads from three different strains at 70x, 30x, and 10x coverage. We then mapped these reads to the ``MN-03.fa`` reference genome to generate the bam file. We only retained reads between positions 1-120,000 for this example. 
+``test_long.bam`` represent **synthetic nanopore reads** from three different strains at 70x, 30x, and 10x coverage. We then mapped these reads to the ``MN-03.fa`` reference genome to generate the bam file. We only retained reads between positions 1-120,000 for this example. 
 
 ``test.vcf`` was obtained by calling SNPs on ``test_long.bam``. We used longshot, a long-read SNP caller to call these SNPs. 
 
@@ -127,7 +127,7 @@ It looks like the first haploset is a small set containing only 3 long-reads, an
 
 .. note::
 
-    Switch errors are a specific type of common error that occurs in haplotype phasing 
+    Switch errors are a specific type of common error that occurs in haplotype phasing. 
 
 The technical details of how HAPQ is actually calculated means that it represents only the first interptation, not the second. So our HAPQ is 0; is this fair? Well, it turns out our reads have prefixes which indicate what strain they really came from (because we simulated our reads). As can be seen below:
 
@@ -168,7 +168,7 @@ The technical details of how HAPQ is actually calculated means that it represent
     pa1_4379        67      73
     ...
 
-``HAP0`` is really a false haplotype:
+It turns out that ``HAP0`` is really a false haplotype after looking at this file in more detail. 
 
 #. ``HAP1`` is a much longer version of ``HAP0``, capturing the ``nc1`` strain. 
 #. ``HAP2`` captures the ``mn1`` strain.
@@ -176,8 +176,43 @@ The technical details of how HAPQ is actually calculated means that it represent
 
 so it's good we assumed 0 to the HAPQ. 
 
+NZ_CP081897.1.vartigs
+**********************
 
+Often we don't care about the exact reads in the haploset, but what sequence of alleles are present on the haplotype represented by the haploset. We will call these **vartigs**, which are analogous to contigs but on the variant (SNP) level, not on the base level. This is found in the ``example_output/NZ_CP081897.1/NZ_CP081897.1.vartigs`` file. 
 
+.. code-block:: sh
 
+    cat example_output/NZ_CP081897.1/NZ_CP081897.1.vartigs
+    ------------------------------------------------------
+    >HAP0.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-15	BASERANGE:771-3416	COV:2.429	ERR:0.088	HAPQ:0	REL_ERR:1.591
+    ?11111111111111
+    >HAP1.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-954	BASERANGE:771-119079	COV:49.374	ERR:0.075	HAPQ:47	REL_ERR:1.346
+    11111111111111111111111111111111111111...
+    >HAP2.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:1-954	BASERANGE:771-119079	COV:23.742	ERR:0.019	HAPQ:38	REL_ERR:0.349
+    00000000000000000000000000000000000000...
+    >HAP4.example_output/NZ_CP081897.1	CONTIG:NZ_CP081897.1	SNPRANGE:16-954	BASERANGE:3502-119079	COV:6.549	ERR:0.041	HAPQ:36	REL_ERR:0.744
+    ?????011000010101010101011110010011111...
 
+The header info in the vartig file is in the same format. However, instead of representing groups of reads, the vartig gives the sequence of SNPs in the haplosets. 
+
+#. The allele ``0`` represents the reference allele. 
+#. The allele ``1`` represents the first alternate allele. ``2`` would represent the second, and so forth. 
+#. The allele ``?`` represents no reads in that haploset cover the allele, so it is unknown. 
+
+We truncated the vartigs in the above example, but HAP1 has almost all alleles ``1`` in the range [1,954], whereas HAP2 has ``0`` on almost all alleles. HAP4 is a mix of ``0`` and ``1``. This makes sense; it turns out **we took reads from the reference genome MN-03.fa for one of the strains**, so it makes sense that HAP2 is almost all reference (any ``1`` alleles for HAP2 would be errors). 
+
+.. note::
+
+    Notice that the ERR for the vartigs increase as the number of alternate alleles increase. This is called **reference-bias**; SNP calls are biased towards the reference, so true alternate alleles are called less often. 
+
+reads_without_snps.tsv
+********************
+
+This file captures any reads that do not have SNPs present (e.g. reads that are too short) or are placed in regions without any SNPs. In our example, there are SNPs throughout the genome, so this file is empty. 
+
+Less important: ``vartig_info``
+****************************
+
+For more information about the haplosets/vartigs, look at the files in ``example_output/NZ_CP081897.1/vartig_info/*``. These files give more information about how confident we are in each allele call for each vartig. See :ref:`usage-outputs`.
 
