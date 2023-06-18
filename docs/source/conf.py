@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Phasing-test'
+project = 'floria'
 copyright = '2023, authors'
-author = 'authors todo'
+author = 'Jim Shaw, Jean-Sebastien Gounot, Hanrong Chen, Niranjan Nagarajan, Yun William Yu'
 
 release = '0.1'
 version = '0.1.0'

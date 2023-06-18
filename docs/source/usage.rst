@@ -6,7 +6,7 @@ Usage: input and output information
     # required options
     floria -b sorted-and-indexed.bam -v vcf-with-header.vcf -r indexed-contigs.fa
 
-    # with 20 threads and only phasing contig_1 to 'output_folder'
+    # with 20 threads, phasing only contig_1 to 'output_folder'
     floria -b map.bam -v snp.vcf -r refs.fa -G contig_1 -t 20 -o output_folder
 
     # output reads in fastq format, filter contigs with < 1000 SNPs, do not use supplementary alignments, require MAPQ 60.
@@ -35,6 +35,7 @@ You can specify the output folder name with the ``-o out-dir`` option. The struc
     out-dir
     |   contig_ploidy_info.tsv
     |   cmd.log
+    |   reads_without_snps.tsv
     |   (additional debugging folders/files)
     │
     └───contig1_in_bam
@@ -62,83 +63,62 @@ Each contig in the bam file is phased independently of the other contigs and has
 
 For a deeper discussion of the output information and potential pitfalls, see :doc:`how-to-guides/htg2`. 
 
-Contig ploidy information
------------------------
-
-
-The ``out-dir/contig_ploidy_info.tsv`` file is extremely useful for characterizing the strain heterogeneity of your community at a glance. 
-
-.. code-block:: sh
-
-    contig  average_local_ploidy    average_global_ploidy   approximate_coverage_ignoring_indels    total_vartig_bases_covered    average_local_ploidy_min1hapq   average_global_ploidy_min1hapq
-    contig1   1.706   0.971   17.739  194971  1.680   0.741
-    contig2   2.509   2.351   69.065  3438158 2.437   2.231
-    ...
-#. ``contig``: Contig name
-#. ``average_local_ploidy``: The local ploidy is the estimated ploidy of the blocks (see algorithm details in :doc:`introduction`) given that that the block passes floria's filtering thresholds. This is always greater than 1. 
-#. ``average_global_ploidy``: The global ploidy is the estimated ploidy is the average SNP multiplicity over the contig. The SNP multiplicity is how many times a SNP is covered by haplosets. This can be < 1 because blocks which have 0 ploidy, i.e. do not have any SNPs or reads passing filters, are included in this metric. 
-#. ``approximate_coverage_ignoring_indels``: The average coverage of the SNPs given that the SNP is covered by at least one read. Reads with many indels bias this metric down slightly because they may not cover SNPs properly. 
-#. ``total_vartig_bases_covered``: How many bases are covered by vartigs. For example, if a contig has 4 strains, this will be about 4 times the contig length. However, it will be lower then certain parts of the contig are not covered by some of the strains. 
-#. ``..._min1hapq``: The same statistics, but ignoring vartigs with 0 HAPQ.
-
-Interpreting the ploidy information
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-In our experience, the most useful metric is the ``average_global_ploidy`` metric, which gives a good sense of how many strains there are. Short-reads tend to capture less strains, so a rough rule of thumb is that ``average_global_ploidy`` = 2.5 means there are probably 3 strains present for short reads.
-
-The ``total_vartig_bases_covered`` metric is also important. Occasionally, you will see a contig with high ploidies, but ``total_vartig_bases_covered`` small. This may indicate mismappings or false strains appearing due to repetitive elements. If ``total_vartig_bases_covered`` is large, you probably have multiple strains present. 
-
-For example, contig1 is a genome of size > 2,000,000 bases. Its global ploidy is 1, which seems to indicate that there's only 1 strain present. Furthermore, the number of bases covered is much less than the genome. Therefore, it is likely that the variants and mappings are spurious, or there is only a little bit of heterogeneity. contig2 is much more likely to be a multi-strain contig. 
-
 Haplosets
 --------
 
 For the contig with name ``contig1``, the ``contig1.haplosets`` file is output and describes the strain-level haplosets (clusters of reads) for this contig. The file looks as follows:
 
+For a contig named contig1, the output file ``contig1.haplosets`` provides detailed information about the strain-level haplosets (clusters of reads) for this contig. Here is an example of what the file might look like:
+
 .. code-block:: sh
 
-    >HAP0_out-dir/contig1   SNPRANGE:1-6    BASERANGE:772-5000    COV:49.371  ERR:0.075   HAPQ:47   REL_ERR:1.35
+    >HAP0.out-dir/contig1   CONTIG:contig1  SNPRANGE:1-15   BASERANGE:771-3416  COV:2.429   ERR:0.088   HAPQ:30  REL_ERR:1.591
     read_name1  first_snp_covered   last_snp_covered
     read_name2  first_snp_covered   last_snp_covered
     ...
-    >HAP1_out-dir/contig1   SNPRANGE:7-11    BASERANGE:5055-6500    COV:25.012  ERR:0.050   HAPQ:15   REL_ERR:1.11
+    >HAP1.out-dir/contig1   CONTIG:contig1  SNPRANGE:16-21  BASERANGE:5055-6500 COV:25.012  ERR:0.050   HAPQ:15 REL_ERR:1.11
     ...
 
-The lines with ``>`` give statistics about the haploset, and the lines below are reads within the haploset. 
+In this file, lines beginning with ``>`` provide statistics about the haploset, and the subsequent lines list the reads contained within that haploset.
 
-#.  ``>HAP0_out-dir/contig1``: The ``>`` symbol delimits groups of reads. HAP(XXX) indicates the haploset identifier, where XXX is an integer. out-dir is the name of the output directory and contig1 is the contig name.
+Here's a breakdown of the data provided:
 
-#.  ``SNPRANGE``: Which SNPs are considered for this haploset during the algorithm. Inclusive range. For example, 1-6 indicates this haploset covered the 1st SNP and the 6th SNP (starting from index 1). 
+#. ``>HAP0.out-dir/contig1``: The > symbol marks the start of a new group of reads. HAP(XXX) is the haploset identifier, where XXX is an integer. 'out-dir' refers to the name of the output directory, and 'contig1' is the contig name.
+#. ``SNPRANGE``: This refers to the range of SNPs considered for this haploset during the algorithm. This range is inclusive. For example, 1-6 implies this haploset covers the 1st SNP to the 6th SNP (starting from index 1).
+#. ``BASERANGE::: Similar to SNPRANGE but uses base-level locations (1-indexed) rather than SNP numbers.
+#. ``COV``: This is an estimation of the coverage for this haploset, calculated by counting the number of times a SNP is covered by the reads in this haploset. This estimate might not be as accurate as coverage determined by considering base-level alignments.
+#. ``ERR``: This represents the SNP error rate within this haploset. For instance, if 9 out of 10 reads carry the reference allele and one read has the alternate, the ERR would be 1/10.
+#. ``HAPQ``: This is a confidence score ranging from 0-60 that indicates how likely it is that this haploset is not a duplicate or spurious haploset. This is similar to MAPQ from read mapping. Note that HAPQ is not an estimate of phasing quality, just as MAPQ differs from a Smith-Waterman score.
+#. ``REL_ERR``: This denotes the relative error of this haploset compared to all haplosets within this contig. For example, 1.35 means the error is 35% higher than the average error (ERR).
+#. ``read_name1 first_snp_covered last_snp_covered``: This provides the name of the read and the range of SNPs covered by that read (inclusive).
 
-#. ``BASERANGE``: Same as SNPRANGE, but using the base level locations (1-indexed) instead of SNP number. 
+reads_without_snps.tsv
+^^^^^^^^^^^^^^^^^^^^^
 
-#. ``COV``: An estimate of the coverage for this haploset. This estimate comes from counting how many times a SNP was covered by the reads on this haploset. This may not be as accurate as a coverage one would get by considering base-level alignments.
+Reads in blocks that have little-to-no variation are written to this file. This happens due to the following reasons:
 
-#. ``ERR``: The SNP error rate within this haploset. For example, if 9/10 reads had the reference allele but the other read had the alternate, the ERR would be 1/10.
+#. There is little variation present in your contig.
+#. A strain and your reference genome have long, similar regions.
+#. Your reference contig has a large inserted, unique sequence relative to another strain, so no reads from the other strain get mapped here. 
+#. Variant calling was not successful for this region, so it looks like your reads don't cover any SNPs
 
-#. ``HAPQ``: A number from 0-60 indicating the confidence (higher is better) that this haploset is **not a duplicated, spurious haploset**. Analogous to MAPQ from read mapping. HAPQ is **not** an estimate of phasing goodness, just like how MAPQ is different than a Smith-Waterman score.
-
-#. ``REL_ERR``: The relative error of this haploset compared to all haplosets within this contig. 1.35 means 35% higher than the average error (ERR), for example. 
-
-#. ``read_name1  first_snp_covered   last_snp_covered``: The name of the read and the first/last SNP covered by the read (inclusive). 
 
 Vartigs
 ------
 
-The ``contig1.vartigs`` file gives the **vartigs**, which are analogous to base-level contigs but only display the SNPs instead of the bases. 
+The file named ``contig1.vartigs`` provides the vartigs, which are analogous to base-level contigs but display only the SNPs rather than all bases.
 
 .. code-block:: sh
 
-    >HAP0_out-dir/contig1  SNPRANGE:1-6    BASERANGE:772-5000    COV:49.371  ERR:0.075   HAPQ:47   REL_ERR:1.35
+    >HAP0.out-dir/contig1   SNPRANGE:1-6    CONTIG:contig1   BASERANGE:772-5000    COV:49.371  ERR:0.075   HAPQ:47   REL_ERR:1.35
     ?11111
-    >HAP1_out-dir/contig1   SNPRANGE:7-11    BASERANGE:5055-6500    COV:25.012  ERR:0.050   HAPQ:15   REL_ERR:1.11
+    >HAP1.out-dir/contig1   SNPRANGE:7-11  CONTIG:contig2   BASERANGE:5055-6500    COV:25.012  ERR:0.050   HAPQ:15   REL_ERR:1.11
     01111
 
-The line with ``>`` is the same as for the haplosets. 
 
-The line below indicates the consensus alleles on this haploset. ``0`` always indicates the reference allele, and ``1`` indicates the first alternate allele, ``2`` the second alternate allele, etc. ``?`` indicates this allele is not covered by any read. So for the strain represented by ``HAP0_out-dir/contig1``, the alleles are alternate for all SNPs between [2,6] except for the first SNP.
+The line starting with ``>`` follows the same format as for the haplosets. The subsequent line provides the consensus alleles for this haploset. Here, ``0`` always represents the reference allele, ``1`` stands for the first alternate allele, ``2`` for the second alternate allele, and so on. ``?`` implies that no read covers this allele. Thus, for the strain represented by HAP0_out-dir/contig1, the alleles are alternate for all SNPs in the range [2,6], except for the first SNP, which is not covered by a read.
 
-Additional vartig info is available in the ``out-dir/contig/vartig_info/`` folder. For the vartig HAPX, X = 0,1,2,.. floria outputs a vartig information file `X_hap.txt` in the following format:
+You can find additional vartig information in the ``out-dir/contig/vartig_info/`` folder. For each vartig HAPX, where X = 0,1,2,..., floria generates a vartig information file ``X_hap.txt`` in the following format:
 
 .. code-block:: 
 
@@ -150,11 +130,49 @@ Additional vartig info is available in the ``out-dir/contig/vartig_info/`` folde
 
 The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
 
+Contig ploidy information
+-----------------------
+
+The ``out-dir/contig_ploidy_info.tsv`` file is extremely useful for characterizing the strain heterogeneity of your community at a glance. 
+
+.. code-block:: sh
+
+    contig  average_local_ploidy    average_global_ploidy   approximate_coverage_ignoring_indels    total_vartig_bases_covered    average_local_ploidy_min1hapq   average_global_ploidy_min1hapq
+    contig1   1.706   0.971   17.739  194971  1.680   0.741
+    contig2   2.509   2.351   69.065  3438158 2.437   2.231
+    ...
+
+
+The following are the interpretations of each column:
+
+#. ``contig``: The contig's name.
+#. ``average_local_ploidy``: This refers to the estimated ploidy of the blocks (see algorithm details in :doc:introduction) that pass floria's filtering thresholds. This value is always greater than 1.
+#. ``average_global_ploidy``: This represents the average SNP multiplicity across the contig, which is the estimated ploidy. SNP multiplicity is the frequency of a SNP's coverage by haplosets. This can be less than 1 because blocks with 0 ploidy, i.e., blocks lacking any SNPs or reads that pass filters, are included in this metric.
+#. ``approximate_coverage_ignoring_indels``: This is the average coverage of the SNPs. Reads with many indels can slightly decrease this metric as they may not properly cover SNPs.
+#. ``total_vartig_bases_covered``: This is the total number of bases covered by vartigs. For instance, if a contig has 4 strains, this number will be approximately four times the contig length. However, it may be lower if certain parts of the contig are not covered by some strains.
+#. ..._min1hapq``: This represents the same statistics but disregards vartigs with 0 HAPQ.
+
+Interpreting the Ploidy Information
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Based on our experience, the ``average_global_ploidy`` metric is particularly useful as it offers a good indication of the number of strains present. As short reads tend to capture fewer strains, a rough guideline is that an ``average_global_ploidy`` of 2.5 likely indicates the presence of three strains for short reads.
+
+The ``total_vartig_bases_covered metric is also critical``. Occasionally, you may observe a contig with high ploidies but a small ``total_vartig_bases_covered value``. This could suggest mismappings or the appearance of false strains due to repetitive elements. If the ``total_vartig_bases_covered`` value is large, it's likely that multiple strains are present.
+
+For instance, consider contig1, which is a genome larger than 2,000,000 bases. Its global ploidy is 1, suggesting the presence of only one strain. Furthermore, the number of bases covered is considerably lower than the genome size. This indicates that the variants and mappings could be spurious, or there might be only slight heterogeneity. On the other hand, contig2 is more likely to be a multi-strain contig.
+
+
 Read output
 ----------
 
-If the option ``--output-reads`` is specified, then reads will be output in the ``out-dir/long_reads`` or ``out-dir/short_reads`` folders. We put paired-end reads in the short_reads folder, and single-end reads in the long-read folders (even if you use short single-end reads). 
+If you specify the ``--output-reads option``: 
 
-For example, the read ``0_part.fastq`` are all of the reads in fastq format for the 0th haplotype, or HAP0 as labelled in the other files. 
+#. Reads will be output in the ``out-dir/long_reads`` or ``out-dir/short_reads folders``. 
+#. Paired-end reads are placed in the short_reads folder, and single-end reads are in the long-reads folders (even for short single-end reads). 
+#. A special file ``out-dir/long_reads/snpless_reads.fastq`` represent reads that pass filtering thresholds but reside in blocks on the reference that have little to no variation (i.e. from ``reads_without_snps.tsv``. If you attempt to phase a genome with almost no variation (e.g. only false positive, scattered SNPs) then most of your reads will be here. 
 
-Importantly, the **long-reads are trimmed against the haplosets**. This means the following: consider a read of length 1500 that is mapped from [200,1700] on the contig. If this read is in HAP0, and HAP0's BASERANGE is 500-1000, we only output the read's bases that are mapped between [500,1000] on the genome. This is so that we don't get poor assemblies near the edges of the haplosets. 
+For example, the file ``1_part.fastq`` contains all of the reads in fastq format for the 1th haplotype, also labeled as HAP1 in other files.
+
+Importantly, **long-reads are trimmed against the haplosets**. For example, consider a read of length 1500 that is mapped from [200,1700] on the contig. If this read is part of HAP1, and HAP1's BASERANGE is 500-1000, we only output the portions of the read that are mapped between [500,1000] on the genome. This approach helps to prevent poor assemblies near the edges of the haplosets.
+
+

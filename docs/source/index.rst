@@ -29,8 +29,8 @@ Contents
 --------
 
 .. toctree::
-   quick_start
    introduction
+   quick_start
    usage
    tutorials
    how-to-guides

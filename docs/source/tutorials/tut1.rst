@@ -3,7 +3,10 @@ Tutorial 1: running floria and visualizing its outputs
 
 This minimal tutorial goes over floria's inputs and outputs by running floria on toy data. 
 
-We will assume that you've installed floria. See the :doc:`../quick_start` page if you have not installed floria. We will assume you have the following commands working properly. 
+Running floria and requirements
+^^^^^^^^^^^^
+
+We will assume that you've installed floria. See the :doc:`../quick_start` page if you have not installed floria. Once floria is installed, run the following commands.
 
 .. code-block:: sh
 
@@ -15,17 +18,22 @@ We will assume that you've installed floria. See the :doc:`../quick_start` page 
    floria -b tests/test_long.bam -v tests/test.vcf -r tests/MN-03.fa -o example_output
    ls example_output
 
+For visualization, you will need:
+
+#. `IGV <https://software.broadinstitute.org/software/igv/>`_ installed. 
+#. matplotlib, numpy, scipy, python3 installed.
+
 
 Inputs
 ^^^^^
 
-The example files represent a mixture of synthetic Klebsiella Pneumoniae reads over three different strains. 
+The provided files represent **a mixture of synthetic Klebsiella Pneumoniae reads** for **three different strains**. 
 
 ``test_long.bam`` represent synthetic nanopore reads from three different strains at 70x, 30x, and 10x coverage. We then mapped these reads to the ``MN-03.fa`` reference genome to generate the bam file. We only retained reads between positions 1-120,000 for this example. 
 
-``test.vcf`` was obtained by calling SNPs on ``test_long.bam``. We used longshot, a long-read SNP caller. 
+``test.vcf`` was obtained by calling SNPs on ``test_long.bam``. We used longshot, a long-read SNP caller to call these SNPs. 
 
-``MN-03.fa`` is the contig we mapped onto. 
+``MN-03.fa`` is the contig we mapped onto. This is an arbitrary Klebsiella Pneumoniae strain.
 
 Output log
 ^^^^^^^^^
@@ -48,16 +56,18 @@ Depending on your version of floria, you should see something like the following
     2023-06-12T23:33:41.084Z INFO  [floria::file_writer] Final SNP error rate for all haplogroups is 0.05546256145299258
     2023-06-12T23:33:41.085Z INFO  [floria] Total time taken is 522.39064ms
 
-The first line indicates what the ``-l`` parameter, the block length, is. We take the 66th percentile read length to be the block lengths in floria by default unless it is user supplied.
+The "Total time ..." line indicates floria has exited successfully. A few lines that may be of interest:
 
-The second line indicates how we estimate the ``-e`` parameter, the baseline error rate. The user can also supply this. 
+#. The first line indicates what the ``-l`` parameter, the block length. See 
+#. The second line indicates how we estimate the ``-e`` parameter, the baseline error rate. The user can also supply this. 
+#. The line "Final SNP error rate ..." describes the fraction of alleles that are discordant in your final outputs. 
 
-The rest of the log shows how long certain steps take in each of floria's steps. The "Total time ..." line indicates floria has exited successfully. 
+For understanding the ``-l`` and ``-e`` parameters, see :doc:`how-to-guides/htg1`. 
 
-floria's output directory structure
-^^^^^^^^^^^^^^^^^^^^^^^^
+floria's main outputs
+^^^^^^^^^^^^^^^^^^^^^
 
-The output structure is outlined in :ref:`usage-outputs` in detail. Let's go over the important files. 
+The output structure is outlined in :ref:`usage-outputs` in detail, and a more detailed description of each output file is also in the link. Let's go over the important files. 
 
 contig_ploidy_info.tsv
 ********************
@@ -65,10 +75,20 @@ contig_ploidy_info.tsv
 .. code-block:: sh
     
     cat example_output/contig_ploidy_info.tsv
-    contig	average_local_ploidy	average_global_ploidy	approximate_coverage_ignoring_indels	total_haplotig_bases_covered	average_local_ploidy_min1hapq	average_global_ploidy_min1hapq
-    NZ_CP081897.1	3.000	3.000	79.601	354838	2.984	2.984
+
+    contig	average_local_ploidy	average_global_ploidy	approximate_coverage_ignoring_indels	total_vartig_bases_covered	average_local_ploidy_min1hapq	average_global_ploidy_min1hapq  avg_err
+    NZ_CP081897.1	3.000	3.000	79.601	354838	2.984	2.984   0.055
 
 This file gives information about how many strains appear to be present in our sample. For each contig, a line with information will be present in this file. We only have one contig, so we only get one (non-header) line. 
+
+The most important columns is the ``average_global_ploidy`` line, which gives a suggestion of how many strains there are. In our case, it looks like there are exactly 3 strains present, which is correct. 
+
+As a sanity check, the ``total_vartig_bases_covered`` column gives 354838 bases, which is approximately 3 (the number of strains) times 120,000. Recall that we restricted our reads to lie within 1-120,000 along the contig. We'll see explain what a "vartig" is below. 
+
+NZ_CP081897.1.vartigs
+**********************
+
+For the rest of the files, they are stored in ``example_output/NZ_CP081897.1``. floria outputs results for each individual contig in the bam file. Because we only have one contig, there is only one output folder. Let's start with the ``*.vartigs`` file. 
 
 
 
