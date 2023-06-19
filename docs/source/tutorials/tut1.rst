@@ -298,7 +298,9 @@ You should then see the following picture.
   :width: 600
   :alt: floria IGV example.
 
-The HAP number are shown on the left hand side. In practice, this is a very useful way of manually confirming that floria's haplosets are reasonable. floria is not perfect, and we recommend visualizing in IGV manually if you can. 
+Notice the HAP number are shown on the left hand side. HAP0 is not output because we do not output haplosets with HAPQ = 0. 
+
+Summary: floria is not perfect, and we recommend visualizing in IGV manually if you can. In practice, this is a very useful way of manually confirming that floria's haplosets are reasonable. It is a bit more inconvenient than the ``visualize_vartigs.py`` script, but it is more comprehensive and helpful when ``visualize_vartigs.py``'s output is messy. 
 
 Conclusion
 ^^^^^^^^^
