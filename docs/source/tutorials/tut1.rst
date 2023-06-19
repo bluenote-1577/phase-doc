@@ -1,14 +1,15 @@
 Tutorial 1: running floria and visualizing its outputs
 ================================================
 
-This minimal tutorial goes over floria's inputs and outputs by running floria on toy data. 
-
+This minimal tutorial goes over floria's inputs and outputs by running floria on toy data. We will show how to visualize and interpret floria's outputs. 
 
 .. image:: ../img/tut1_vartigs.png
-  :width: 600
+  :width: 300
   :alt: floria visualization example.
 
-
+.. image:: ../img/tut1-haplotag.png
+  :width: 300
+  :alt: floria IGV example.
 
 Prerequisites and running floria
 ^^^^^^^^^^^^
@@ -242,12 +243,13 @@ Visualizing vartigs/haplosets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: ../img/tut1_vartigs.png
-  :width: 600
+  :width: 300
   :alt: floria visualization example.
 
 To visualize your vartigs, we provide a script called ``visualize_vartigs.py`` in the following repository: https://github.com/bluenote-1577/vartig-utils. You will need numpy and matplotlib installed. Simply run:
 
 .. code-block:: sh
+
     git clone https://github.com/bluenote-1577/vartig-utils
     python vartig-utils/visualize_vartigs.py
 
@@ -260,10 +262,10 @@ To visualize your vartigs, we provide a script called ``visualize_vartigs.py`` i
 
  We have three true strains here, which are well represented by this plot. 
 
- We've found the above visualization to be very useful in practice for confirming that a phasing is reasonable. If you have a consistent coverage level and alternate allele fraction, you can be confident that your phasing is reasonable. For example, the following picture is a phasing for a **real** nanopore community:
+ We've found the above visualization to be very useful in practice for confirming that a phasing is reasonable. If you have a consistent coverage level and alternate allele fraction, you can be confident that your phasing is reasonable. For example, the second picture is a phasing for a **real** nanopore community with a slightly different colormap:
 
 .. image:: ../img/visualize-vartig-example.png
-  :width: 600
+  :width: 300
   :alt: floria visualization example.
 
 Notice that alternate allele fraction is relatively constant and that coverage is consistent, even across broken vartigs. 
@@ -280,7 +282,7 @@ To visualize the actual reads in the haplosets instead of just the vartig, we pr
 
 For more in-depth information on how to use the IGV, see any tutorial out there. Briefly, once you have the IGV open, simply
 
-#. load the ``haplotagged_example.bam`` file and ``MN-03.fa`` as the reference.
+#. Load the ``haplotagged_example.bam`` file and ``MN-03.fa`` as the reference.
 #. Right click the left panel, click "Group alignments by" and then "phase". 
 #. Right click the left panel, and choose "squished". 
 
