@@ -243,7 +243,7 @@ Visualizing vartigs/haplosets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: ../img/tut1_vartigs.png
-  :width: 400
+  :width: 450
   :alt: floria visualization example.
 
 To visualize your vartigs, we provide a script called ``visualize_vartigs.py`` in the following repository: https://github.com/bluenote-1577/vartig-utils. You will need numpy and matplotlib installed. Simply run:
@@ -265,7 +265,7 @@ To visualize your vartigs, we provide a script called ``visualize_vartigs.py`` i
  We've found the above visualization to be very useful in practice for confirming that a phasing is reasonable. If you have a consistent coverage level and alternate allele fraction, you can be confident that your phasing is reasonable. For example, the second picture is a phasing for a **real** nanopore community with a slightly different colormap:
 
 .. image:: ../img/visualize-vartig-example.png
-  :width: 400
+  :width: 450
   :alt: floria visualization example.
 
 Notice that alternate allele fraction is relatively constant and that coverage is consistent, even across broken vartigs. 
