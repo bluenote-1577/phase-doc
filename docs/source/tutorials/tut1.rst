@@ -296,4 +296,9 @@ You should then see the following picture.
   :width: 600
   :alt: floria IGV example.
 
-The HAP number are shown on the left hand side. 
+The HAP number are shown on the left hand side. In practice, this is a very useful way of manually confirming that floria's haplosets are reasonable. floria is not perfect, and we recommend visualizing in IGV manually if you can. 
+
+Conclusion
+^^^^^^^^^
+
+We've shown how to run floria on a toy synthetic 3 strain mock community. floria offers sane defaults, a simple command line for phasing, and two very useful tools for visualizing results. 
