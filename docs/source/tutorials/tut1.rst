@@ -282,9 +282,11 @@ To visualize the actual reads in the haplosets instead of just the vartig, we pr
 
 For more in-depth information on how to use the IGV, see any tutorial out there. Briefly, once you have the IGV open, simply
 
-#. Load the ``haplotagged_example.bam`` file and ``MN-03.fa`` as the reference.
+#. Load the ``haplotagged_example.bam`` file in the upper left "File -> Load from file" menu.
+#. Load ``MN-03.fa`` as the reference in the "Genomes -> Load genome from file" menu. 
 #. Right click the left panel, click "Group alignments by" and then "phase". 
 #. Right click the left panel, and choose "squished". 
+#. Zoom into your area of interest. 
 
 You should then see the following picture. 
 
