@@ -253,12 +253,12 @@ To visualize your vartigs, we provide a script called ``visualize_vartigs.py`` i
     git clone https://github.com/bluenote-1577/vartig-utils
     python vartig-utils/visualize_vartigs.py
 
- You should see the above figure. In a nutshell:
+You should see the above figure. In a nutshell:
 
- #. Each bar represents a vartig with HAPQ > 0. 
- #. The y-axis represents the COV for the vartig, and the x-axis represents the BASERANGE of the vartig.
- #. The upper plot colors the vartig by alternate allele fraction. That is, what precentage of the vartig contains non ``0`` alleles. 
- #. The lower plot colors the vartig by HAPQ. 
+#. Each bar represents a vartig with HAPQ > 0. 
+#. The y-axis represents the COV for the vartig, and the x-axis represents the BASERANGE of the vartig.
+#. The upper plot colors the vartig by alternate allele fraction. That is, what precentage of the vartig contains non ``0`` alleles. 
+#. The lower plot colors the vartig by HAPQ. 
 
  We have three true strains here, which are well represented by this plot. 
 
