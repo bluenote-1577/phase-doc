@@ -260,9 +260,9 @@ You should see the above figure. In a nutshell:
 #. The upper plot colors the vartig by alternate allele fraction. That is, what precentage of the vartig contains non ``0`` alleles. 
 #. The lower plot colors the vartig by HAPQ. 
 
- We have three true strains here, which are well represented by this plot. 
+We have three true strains here, which are well represented by this plot. 
 
- We've found the above visualization to be very useful in practice for confirming that a phasing is reasonable. If you have a consistent coverage level and alternate allele fraction, you can be confident that your phasing is reasonable. For example, the second picture is a phasing for a **real** nanopore community with a slightly different colormap:
+We've found the above visualization to be very useful in practice for confirming that a phasing is reasonable. If you have a consistent coverage level and alternate allele fraction, you can be confident that your phasing is reasonable. For example, the second picture is a phasing for a **real** nanopore community with a slightly different colormap:
 
 .. image:: ../img/visualize-vartig-example.png
   :width: 450

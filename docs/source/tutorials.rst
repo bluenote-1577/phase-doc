@@ -5,5 +5,3 @@ The below tutorials give step-by-step directions for running floria and also for
 
 .. toctree::
    tutorials/tut1
-   tutorials/tut2
-   tutorials/tut3

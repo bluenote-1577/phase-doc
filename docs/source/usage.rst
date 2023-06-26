@@ -35,24 +35,24 @@ You can specify the output folder name with the ``-o out-dir`` option. The struc
     out-dir
     |   contig_ploidy_info.tsv
     |   cmd.log
-    |   reads_without_snps.tsv
-    |   (additional debugging folders/files)
     │
     └───contig1_in_bam
     │   │   contig1.haplosets
     |   |   contig1.vartigs
-    │   │
-    │   └───vartig_info
-    │   |   │   0_hap.txt
-    │   |   │   ...
+    |   |   reads_without_snps.tsv
+    │   │   vartig_info.txt
     |   |
     │   └───long_reads (only when --output-reads is enabled)
-    │   |   │   0_part.fastq
+    │   |   │   0_part.fastq (reads output only if the partition is non-empty)
     │   |   |   ...
+    │   |   │   snpless.fastq
     |   |
     │   └───short_reads (only when --output-reads is enabled)
     │       │   0_part_paired1.fastq
     │       |   0_part_paired2.fastq
+    |       |   ...
+    |       |   snpless_paired1.fastq
+    |       |   snpless_paired2.fastq
     |   
     └───contig2_in_bam
         │   ...
