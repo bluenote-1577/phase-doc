@@ -221,7 +221,7 @@ reads_without_snps.tsv
 
 This file captures any reads that do not have SNPs present (e.g. reads that are too short) or are placed in regions without any SNPs. In our example, there are SNPs throughout the genome, so this file is empty. 
 
-vartig_info/hap*.txt
+vartig_info.txt
 ****************************
 
 For more information about the haplosets/vartigs, look at the files in ``example_output/NZ_CP081897.1/vartig_info/*``. These files give more information about how confident we are in each allele call for each vartig. See :ref:`usage-outputs`.
