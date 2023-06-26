@@ -43,7 +43,7 @@ You can specify the output folder name with the ``-o out-dir`` option. The struc
     │   │   vartig_info.txt
     |   |
     │   └───long_reads (only when --output-reads is enabled)
-    │   |   │   0_part.fastq (reads output only if the partition is non-empty)
+    │   |   │   0_part.fastq (reads output only when the partition is non-empty)
     │   |   |   ...
     │   |   │   snpless.fastq
     |   |
@@ -116,17 +116,26 @@ The file named ``contig1.vartigs`` provides the vartigs, which are analogous to 
     01111
 
 
-The line starting with ``>`` follows the same format as for the haplosets. The subsequent line provides the consensus alleles for this haploset. Here, ``0`` always represents the reference allele, ``1`` stands for the first alternate allele, ``2`` for the second alternate allele, and so on. ``?`` implies that no read covers this allele. Thus, for the strain represented by HAP0_out-dir/contig1, the alleles are alternate for all SNPs in the range [2,6], except for the first SNP, which is not covered by a read.
+The line starting with ``>`` follows the same format as for the haplosets. The subsequent line provides the consensus alleles for this haploset. Here, ``0`` always represents the reference allele, ``1`` stands for the first alternate allele, ``2`` for the second alternate allele, and so on. ``?`` implies that no read covers this allele. Thus, for the strain represented by HAP0.out-dir/contig1, the alleles are alternate for all SNPs in the range [2,6], except for the first SNP, which is not covered by a read.
 
-You can find additional vartig information in the ``out-dir/contig/vartig_info/`` folder. For each vartig HAPX, where X = 0,1,2,..., floria generates a vartig information file ``X_hap.txt`` in the following format:
+vartig_info.txt
+--------------
+
+You can find additional vartig information in the ``out-dir/contig/vartig_info.txt`` file. For each vartig HAPX, where X = 0,1,2,..., floria generates additional vartig information.
 
 .. code-block:: 
 
-    >HAP0_out-dir/contig1       SNPRANGE:1-6
+    >HAP0.out-dir/contig1       SNPRANGE:1-6
     1:770   ?       NA      
     2:1022  1       1:1     
     3:2007  1       0:1|1:2 
     4:2034  1       1:3  
+    ...
+    >HAP1.out-dir/contig1       SNPRANGE:4-7
+    4:2034  0       0:25
+    5:2037  0       0:25
+    6:2217  0       0:28
+    7:2220  0       0:29
 
 The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
 
