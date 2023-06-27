@@ -146,9 +146,9 @@ The ``out-dir/contig_ploidy_info.tsv`` file is extremely useful for characterizi
 
 .. code-block:: sh
 
-    contig  average_local_ploidy    average_global_ploidy   approximate_coverage_ignoring_indels    total_vartig_bases_covered    average_local_ploidy_min1hapq   average_global_ploidy_min1hapq
-    contig1   1.706   0.971   17.739  194971  1.680   0.741
-    contig2   2.509   2.351   69.065  3438158 2.437   2.231
+    contig  average_local_ploidy    average_global_ploidy   approximate_coverage_ignoring_indels    total_vartig_bases_covered    average_local_ploidy_min1hapq   average_global_ploidy_min1hapq    avg_err
+    contig1   1.706   0.971   17.739  194971  1.680   0.741 0.0015
+    contig2   2.509   2.351   69.065  3438158 2.437   2.231 0.0026
     ...
 
 
@@ -159,7 +159,8 @@ The following are the interpretations of each column:
 #. ``average_global_ploidy``: This represents the average SNP multiplicity across the contig, which is the estimated ploidy. SNP multiplicity is the frequency of a SNP's coverage by haplosets. This can be less than 1 because blocks with 0 ploidy, i.e., blocks lacking any SNPs or reads that pass filters, are included in this metric.
 #. ``approximate_coverage_ignoring_indels``: This is the average coverage of the SNPs. Reads with many indels can slightly decrease this metric as they may not properly cover SNPs.
 #. ``total_vartig_bases_covered``: This is the total number of bases covered by vartigs. For instance, if a contig has 4 strains, this number will be approximately four times the contig length. However, it may be lower if certain parts of the contig are not covered by some strains.
-#. ..._min1hapq``: This represents the same statistics but disregards vartigs with 0 HAPQ.
+#. ``..._min1hapq``: This represents the same statistics but disregards vartigs with 0 HAPQ.
+#. ``avg_err``: The average error rate fraction of the phasing. This is the same error statistic as the ERR statistic for the haplosets/vartigs. 
 
 Interpreting the Ploidy Information
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
