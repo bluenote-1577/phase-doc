@@ -85,15 +85,19 @@ contig_ploidy_info.tsv
 .. code-block:: sh
     
     cat example_output/contig_ploidy_info.tsv
-
-    contig	average_local_ploidy	average_global_ploidy	approximate_coverage_ignoring_indels	total_vartig_bases_covered	average_local_ploidy_min1hapq	average_global_ploidy_min1hapq  avg_err
-    NZ_CP081897.1	3.000	3.000	79.601	354838	2.984	2.984   0.055
+    ------------------------------------------
+    contig	average_global_ploidy	whole_contig_multiplicity	approximate_coverage_ignoring_indels	average_local_ploidy	total_vartig_bases_covered	average_global_ploidy_min1hapq	average_local_ploidy_min1hapq	avg_err
+    NZ_CP081897.1	3.000	0.068	79.601	3	354838	2.984	2.984	0.0555
 
 This file gives information about how many strains appear to be present in our sample. For each contig, a line with information will be present in this file. We only have one contig, so we only get one (non-header) line. 
 
-The most important columns is the ``average_global_ploidy`` line, which gives a suggestion of how many strains there are. In our case, it looks like there are exactly 3 strains present, which is correct. 
+The most important columns are usually columns 2-4. 
 
-As a sanity check, the ``total_vartig_bases_covered`` column gives 354838 bases, which is approximately 3 (the number of strains) times 120,000. Recall that we restricted our reads to lie within 1-120,000 along the contig. We'll see explain what a "vartig" is below. 
+#. ``average_global_ploidy`` gives a suggestion of how many strains there are. In our case, it looks like there are exactly 3 strains present, which is correct. 
+#. ``whole_contig_multiplicity`` is simply the sum of vartig lengths divided by contig length. Here we have around 360,000 total bases covered by vartigs (column 6), which is good (3 strains x 120,000 bases). The complete genome is about 5 Mb, hence 0.068 is the result -- implying only part of the genome is phased. 
+#. ``approximate_coverage_ignoring_indels`` gives an estimate of the coverage. The true coverage is 110x here, but we only get ~80x coverage. This is because our simulated nanopore reads had a lot of indels, which causes reads skip over alleles, lowering our estimated coverage.  
+
+See :doc:`../how-to-guides/htg2` for more information on interpreting this file. 
 
 NZ_CP081897.1.haplosets
 **********************
