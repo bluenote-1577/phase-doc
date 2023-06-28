@@ -146,18 +146,20 @@ The ``out-dir/contig_ploidy_info.tsv`` file is extremely useful for characterizi
 
 .. code-block:: sh
 
-    contig  average_local_ploidy    average_global_ploidy   approximate_coverage_ignoring_indels    total_vartig_bases_covered    average_local_ploidy_min1hapq   average_global_ploidy_min1hapq    avg_err
-    contig1   1.706   0.971   17.739  194971  1.680   0.741 0.0015
-    contig2   2.509   2.351   69.065  3438158 2.437   2.231 0.0026
+    contig	average_global_ploidy	whole_contig_multiplicity	approximate_coverage_ignoring_indels	average_local_ploidy	total_vartig_bases_covered	average_global_ploidy_min1hapq	average_local_ploidy_min1hapq	avg_err
+
+    contig_1041	2.170	2.170	26.452	2.16988416988417	325797	2.110	2.110	0.0611
+    contig_120	3.110	0.301	7.558	3.123620309050773	35610	1.705	1.713	0.0414
     ...
 
 
 The following are the interpretations of each column:
 
 #. ``contig``: The contig's name.
-#. ``average_local_ploidy``: This refers to the estimated ploidy of the blocks (see algorithm details in :doc:introduction) that pass floria's filtering thresholds. This value is always greater than 1.
-#. ``average_global_ploidy``: This represents the average SNP multiplicity across the contig, which is the estimated ploidy. SNP multiplicity is the frequency of a SNP's coverage by haplosets. This can be less than 1 because blocks with 0 ploidy, i.e., blocks lacking any SNPs or reads that pass filters, are included in this metric.
+#. ``average_global_ploidy``: This represents the average SNP multiplicity across the contig, which is the estimated ploidy. SNP multiplicity is the number of times it is covered by haplosets. 
+#. ``whole_contig_multiplicity``: This is the ``total_vartig_bases_covered`` divided by contig length, i.e. how many times the contig is covered by vartigs. 
 #. ``approximate_coverage_ignoring_indels``: This is the average coverage of the SNPs. Reads with many indels can slightly decrease this metric as they may not properly cover SNPs.
+#. ``average_local_ploidy``: This refers to the estimated ploidy of the blocks (see algorithm details in :doc:introduction) that pass floria's filtering thresholds. This value is always greater than 1 and can be slightly different than the global ploidy. 
 #. ``total_vartig_bases_covered``: This is the total number of bases covered by vartigs. For instance, if a contig has 4 strains, this number will be approximately four times the contig length. However, it may be lower if certain parts of the contig are not covered by some strains.
 #. ``..._min1hapq``: This represents the same statistics but disregards vartigs with 0 HAPQ.
 #. ``avg_err``: The average error rate fraction of the phasing. This is the same error statistic as the ERR statistic for the haplosets/vartigs. 
@@ -165,12 +167,15 @@ The following are the interpretations of each column:
 Interpreting the Ploidy Information
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Based on our experience, the ``average_global_ploidy`` metric is particularly useful as it offers a good indication of the number of strains present. As short reads tend to capture fewer strains, a rough guideline is that an ``average_global_ploidy`` of 2.5 likely indicates the presence of three strains for short reads.
+See :doc:`how-to-guides/htg2` for more insights on how to interpret the ploidy information. Below are a few main points:
 
-The ``total_vartig_bases_covered metric is also critical``. Occasionally, you may observe a contig with high ploidies but a small ``total_vartig_bases_covered value``. This could suggest mismappings or the appearance of false strains due to repetitive elements. If the ``total_vartig_bases_covered`` value is large, it's likely that multiple strains are present.
+Based on our experience, the ``average_global_ploidy`` metric and the ``whole_contig_multiplicity`` metrics offers a good indication of the number of strains present. 
 
-For instance, consider contig1, which is a genome larger than 2,000,000 bases. Its global ploidy is 1, suggesting the presence of only one strain. Furthermore, the number of bases covered is considerably lower than the genome size. This indicates that the variants and mappings could be spurious, or there might be only slight heterogeneity. On the other hand, contig2 is more likely to be a multi-strain contig.
+Essentially, ``average_global_ploidy`` tells you how many times a SNP is covered by vartigs on average. ``whole_contig_multiplicity`` tells you how many vartigs cover your contig. 
 
+**For short reads**: The ``average_global_ploidy`` gives a pretty good indication of how many strains there are, but it may underestimate the number of strains slightly due to short-reads being able to resolve less strains. The ``whole_contig_multiplicity`` tends to be much less than ``average_global_ploidy`` -- this lies in short-read vartigs covering less of the entire contig. We recommend making sure that ``whole_contig_multiplicity`` is high enough, say > 0.1 at least. 
+
+**For long reads**: The ``average_global_ploidy`` still gives a pretty good indication of how many strains there are, and the ``whole_contig_multiplicity`` tends to be very similar to ``average_global_ploidy`` **IF** strains are actually present. However, it can be the case that ``average_global_ploidy`` >> ``whole_contig_multiplicity``, which indicates that only part of the genome is being phased, in which case it is likely that only part of the genome has variation, perhaps from a very distant, conserved sequence or a mobile element. 
 
 .. _read-outputs:
 
