@@ -5,7 +5,19 @@ This guide gives a deeper explanation for how to interpret the phasings output b
 
 It would be beneficial to do :doc:`../tutorials/tut1` before reading this guide. 
 
-The first thing you should do after running floria is to examine the ``contig_ploidy_info.tsv`` file found in the output folder. It gives very useful high-level statistics for your results. 
+How many strains are there in my contig?
+---------------------------------------
+
+This is the question that the ``contig_ploidy_info.tsv`` file is trying to answer. For an introduction on how to do this, see :ref:`interpret_ploidy_usage` and the associated reference for this file. Paraphrasing 
+
+
+
+Spurious variants cause high "ploidy"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Cross mappings
+^^^^^^^^^^^^^^^
 
 
 Filtering by ``whole_contig_multiplicity``
@@ -21,12 +33,6 @@ Visualization is important.
 Noisier reads require higher coverage for accurate information
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Spurious variants cause high "ploidy"
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-Cross mappings
-^^^^^^^^^^^^^^^
 
 
 Switch errors
