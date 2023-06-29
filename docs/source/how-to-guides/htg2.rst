@@ -105,7 +105,31 @@ We found that there were at least 2 strains present in each of these two contigs
 Number of strains is more accurate when the coverage is higher
 ------------------------------------------------------------
 
-We recommend using floria when there is at least 3-5x coverage. With noisier reads, you need higher coverages. 
+We recommend using floria when there is at least 3-5x coverage. With noisier reads, you need higher coverages. Consider the following example, with ~95% identity nanopore reads.
+
+
+.. code-block:: sh
+
+    contig	average_global_ploidy   whole_contig_multiplicity ...
+    contig_14956	4.072	4.036	14.152	4.072	1755204	3.942	3.942	0.1313
+
+The ploidy and contig multiplicity is around 4, which looks promising. However, the coverage is 14.152, meaning that there each strain has quite slow coverage, which is very small. If we visualize the vartigs from this contig, we get the below picture. 
+
+.. image:: ../img/4xlowcovbad.png
+  :width: 600
+  :alt: floria IGV example.
+
+The strain behavior isn't obvious. The vartigs are so low coverage that they're maybe spurious as well. If we remove vartigs with HAPQ < 30, we get:
+
+
+.. image:: ../img/q30lowcov4strain.png
+  :width: 600
+  :alt: floria IGV example.
+
+which seems to indicate a less number of good vartigs.
+
+**Conclusion**: floria can still phase lower coverage strains around 5x cov, but more care has to be taken.  
+
 
 
 Visualization is important. 
