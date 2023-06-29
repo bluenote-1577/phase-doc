@@ -1,8 +1,6 @@
 Introduction
 =================
 
-This document provides a fundamental understanding of floria's operation and the issue it addresses.
-
 What is floria?
 --------------
 

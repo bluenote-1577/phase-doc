@@ -29,8 +29,11 @@ Contents
 --------
 
 .. toctree::
+   :maxdepth: 1
+
    introduction
    quick_start
    usage
+   scripts
    tutorials
    how-to-guides
