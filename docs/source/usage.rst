@@ -139,6 +139,8 @@ You can find additional vartig information in the ``out-dir/contig/vartig_info.t
 
 The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
 
+.. _contig_ploidy_info:
+
 Contig ploidy information
 -----------------------
 
@@ -164,18 +166,14 @@ The following are the interpretations of each column:
 #. ``..._min1hapq``: This represents the same statistics but disregards vartigs with 0 HAPQ.
 #. ``avg_err``: The average error rate fraction of the phasing. This is the same error statistic as the ERR statistic for the haplosets/vartigs. 
 
+
+
 Interpreting the Ploidy Information
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-See :doc:`how-to-guides/htg2` for more insights on how to interpret the ploidy information. Below are a few main points:
+See :doc:`how-to-guides/htg2` for more insights on how to interpret the ploidy information.
 
-Based on our experience, the ``average_global_ploidy`` metric and the ``whole_contig_multiplicity`` metrics offers a good indication of the number of strains present. 
-
-Essentially, ``average_global_ploidy`` tells you how many times a SNP is covered by vartigs on average. ``whole_contig_multiplicity`` tells you how many vartigs cover your contig. 
-
-**For short reads**: The ``average_global_ploidy`` gives a pretty good indication of how many strains there are, but it may underestimate the number of strains slightly due to short-reads being able to resolve less strains. The ``whole_contig_multiplicity`` tends to be much less than ``average_global_ploidy`` -- this lies in short-read vartigs covering less of the entire contig. We recommend making sure that ``whole_contig_multiplicity`` is high enough, say > 0.1 at least. 
-
-**For long reads**: The ``average_global_ploidy`` still gives a pretty good indication of how many strains there are, and the ``whole_contig_multiplicity`` tends to be very similar to ``average_global_ploidy`` **IF** strains are actually present. However, it can be the case that ``average_global_ploidy`` >> ``whole_contig_multiplicity``, which indicates that only part of the genome is being phased, in which case it is likely that only part of the genome has variation, perhaps from a very distant, conserved sequence or a mobile element. 
+**tldr:** look at ``average_global_ploidy`` for the number of strains, make sure ``whole_contig_multiplicity`` is high enough so your phasing is not spurious, and you can be more confident when the coverage is high as well. 
 
 .. _read-outputs:
 
