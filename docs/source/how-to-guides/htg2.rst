@@ -29,6 +29,7 @@ Consider the following "null" test. We generated synthetic reads for a single K.
 
 
 .. code-block:: sh
+
     cat floria_out_dir/contig_ploidy_info.tsv
     -------------------------------------------
     contig	average_global_ploidy	whole_contig_multiplicity	approximate_coverage_ignoring_indels	average_local_ploidy	total_vartig_bases_covered	average_global_ploidy_min1hapq	average_local_ploidy_min1hapq	avg_err
@@ -50,6 +51,7 @@ Suppose we had both E. coli and K. pneumoniae in our community. Because E. coli 
 To simulate cross mapping, we can simulate E. coli reads and K. pneumoniae reads, map them to K. pneumoniae (which share about 78% ANI). Now let's see how phasing works:
 
 .. code-block:: sh
+
     cat cross_map_example/contig_ploidy_info.tsv
     -------------------------------------------
     contig	average_global_ploidy	whole_contig_multiplicity	approximate_coverage_ignoring_indels	average_local_ploidy	total_vartig_bases_covered	average_global_ploidy_min1hapq	average_local_ploidy_min1hapq	avg_err
@@ -66,6 +68,7 @@ We ran floria with short reads on a 3 strain simulated K. pneumoniae community. 
 
 
 .. code-block:: sh
+
     cat short_three_kpneumoniae_strains/contig_ploidy_info.tsv
     ----------------------------------------------------------
     contig	average_global_ploidy	whole_contig_multiplicity	approximate_coverage_ignoring_indels	average_local_ploidy	total_vartig_bases_covered	average_global_ploidy_min1hapq	average_local_ploidy_min1hapq	avg_err
@@ -76,6 +79,7 @@ Notice that the contig multiplicity is quite a bit smaller than 3, the true numb
 On the other hand, for **long reads** on the same community, no such issues occurs.:
 
 .. code-block:: sh
+
     cat long_three_kpneumoniae_strains/contig_ploidy_info.tsv
     ----------------------------------------------------------
     contig	average_global_ploidy	whole_contig_multiplicity	approximate_coverage_ignoring_indels	average_local_ploidy	total_vartig_bases_covered	average_global_ploidy_min1hapq	average_local_ploidy_min1hapq	avg_err
@@ -86,6 +90,7 @@ Now, on a **real community**, we got the following **short-read** results
 
 
 .. code-block:: sh
+
     contig	average_local_ploidy	average_global_ploidy	approximate_coverage_ignoring_indels	total_vartig_bases_covered	whole_contig_multiplicity	average_local_ploidy_min1hapq	average_global_ploidy_min1hapq	avg_err
     NC_021016.1	2.106	1.936	298.657	2511481	0.806	2.034	1.787	0.0023
     NZ_AP024085.1	2.092	1.718	98.279	1193407	0.416	2.093	1.493	0.0038
