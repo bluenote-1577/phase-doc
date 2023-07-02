@@ -33,7 +33,7 @@ Contents
 
    introduction
    quick_start
+   tutorials
    usage
    scripts
-   tutorials
    how-to-guides
