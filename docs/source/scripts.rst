@@ -17,11 +17,11 @@ visualize_vartigs.py
 
 Very useful script for quickly visualizing output vartigs. 
 
-.. image:: img/tut1_vartigs.png
+.. image:: img/visualize-vartig-example.png
   :width: 400
   :alt: floria visualization example.
 
-Each line is a vartig passing certain thresholds. The top plot is colored by the allele ratio of the vartig, i.e. what fraction of the vartig is reference versus alternate? For a good phasing, you would expect the coverage and allele ratios of vartigs from the same strain to be similar. 
+Each line is a vartig passing certain thresholds. The top plot is colored by the alternate allele ratio of the vartig, i.e. what fraction of the vartig's alleles are alternate? For a good phasing, you would expect the coverage and allele ratios of vartigs from the same strain to be similar. 
 
 .. code-block:: sh
 
