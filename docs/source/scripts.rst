@@ -17,7 +17,7 @@ visualize_vartigs.py
 
 Very useful script for quickly visualizing output vartigs. 
 
-.. image:: ../img/tut1_vartigs.png
+.. image:: img/tut1_vartigs.png
   :width: 400
   :alt: floria visualization example.
 
