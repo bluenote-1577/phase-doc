@@ -85,7 +85,7 @@ Here's a breakdown of the data provided:
 
 #. ``>HAP0.out-dir/contig1``: The > symbol marks the start of a new group of reads. HAP(XXX) is the haploset identifier, where XXX is an integer. 'out-dir' refers to the name of the output directory, and 'contig1' is the contig name.
 #. ``SNPRANGE``: This refers to the range of SNPs considered for this haploset during the algorithm. This range is inclusive. For example, 1-6 implies this haploset covers the 1st SNP to the 6th SNP (starting from index 1).
-#. ``BASERANGE::: Similar to SNPRANGE but uses base-level locations (1-indexed) rather than SNP numbers.
+#. ``BASERANGE``: Similar to SNPRANGE but uses base-level locations (1-indexed) rather than SNP numbers.
 #. ``COV``: This is an estimation of the coverage for this haploset, calculated by counting the number of times a SNP is covered by the reads in this haploset. This estimate might not be as accurate as coverage determined by considering base-level alignments.
 #. ``ERR``: This represents the SNP error rate within this haploset. For instance, if 9 out of 10 reads carry the reference allele and one read has the alternate, the ERR would be 1/10.
 #. ``HAPQ``: This is a confidence score ranging from 0-60 that indicates how likely it is that this haploset is not a duplicate or spurious haploset. This is similar to MAPQ from read mapping. Note that HAPQ is not an estimate of phasing quality, just as MAPQ differs from a Smith-Waterman score.
@@ -141,39 +141,37 @@ The lines after the header are of the form ``snp_number:base    consensus_allele
 
 .. _contig_ploidy_info:
 
-Contig ploidy information
+Contig ploidy (strain count) information
 -----------------------
 
 The ``out-dir/contig_ploidy_info.tsv`` file is extremely useful for characterizing the strain heterogeneity of your community at a glance. 
 
 .. code-block:: sh
 
-    contig	average_global_ploidy	whole_contig_multiplicity	approximate_coverage_ignoring_indels	average_local_ploidy	total_vartig_bases_covered	average_global_ploidy_min1hapq	average_local_ploidy_min1hapq	avg_err
+    contig	average_straincount	whole_contig_multiplicity	approximate_coverage_ignoring_indels	total_vartig_bases_covered	average_straincount_min15hapq	average_straincount_min30hapq	average_straincount_min45hapq	avg_err
 
-    contig_1041	2.170	2.170	26.452	2.16988416988417	325797	2.110	2.110	0.0611
-    contig_120	3.110	0.301	7.558	3.123620309050773	35610	1.705	1.713	0.0414
+    NZ_CP081897.1	3.000	0.068	79.601	354838	2.984	2.984	1.000	0.0555
     ...
 
 
 The following are the interpretations of each column:
 
 #. ``contig``: The contig's name.
-#. ``average_global_ploidy``: This represents the average SNP multiplicity across the contig, which is the estimated ploidy. SNP multiplicity is the number of times it is covered by haplosets. 
+#. ``average_global_straincount``: This represents the average SNP multiplicity across the contig, which is the estimated strain count. SNP multiplicity is the number of times it is covered by haplosets. 
 #. ``whole_contig_multiplicity``: This is the ``total_vartig_bases_covered`` divided by contig length, i.e. how many times the contig is covered by vartigs. 
 #. ``approximate_coverage_ignoring_indels``: This is the average coverage of the SNPs. Reads with many indels can slightly decrease this metric as they may not properly cover SNPs.
-#. ``average_local_ploidy``: This refers to the estimated ploidy of the blocks (see algorithm details in :doc:introduction) that pass floria's filtering thresholds. This value is always greater than 1 and can be slightly different than the global ploidy. 
 #. ``total_vartig_bases_covered``: This is the total number of bases covered by vartigs. For instance, if a contig has 4 strains, this number will be approximately four times the contig length. However, it may be lower if certain parts of the contig are not covered by some strains.
-#. ``..._min1hapq``: This represents the same statistics but disregards vartigs with 0 HAPQ.
+#. ``..._min15/30/45hapq``: This represents the same statistics but disregards vartigs with less than 15/30/45 HAPQ.
 #. ``avg_err``: The average error rate fraction of the phasing. This is the same error statistic as the ERR statistic for the haplosets/vartigs. 
 
 
 
-Interpreting the Ploidy Information
+Interpreting the strain count information
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-See :doc:`how-to-guides/htg2` for more insights on how to interpret the ploidy information.
+See :doc:`how-to-guides/htg2` for more insights on how to interpret the strain count information.
 
-**tldr:** look at ``average_global_ploidy`` for the number of strains, make sure ``whole_contig_multiplicity`` is high enough so your phasing is not spurious, and you can be more confident when the coverage is high as well. 
+**tldr:** look at ``average_global_straincount`` for the number of strains, make sure ``whole_contig_multiplicity`` is high enough so your phasing is not spurious, and you can be more confident when the coverage is high as well. 
 
 .. _read-outputs:
 

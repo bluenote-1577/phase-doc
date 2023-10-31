@@ -50,13 +50,3 @@ haplotag_bam.py
 
 This script does the same thing as haplotag_output_dir.py, but you can specify exactly which contig to haplotag. 
 
-write_contig_headers_vcf.py
--------------
-
-Certain variant callers (such as longshot) do not put all header information the .vcf file, but floria needs this information to process the vcf. To generate a new vcf with header information, try
-
-.. code-block:: sh
-
-    python write_contig_headers_vcf.py my_vcf_without_headers.vcf
-
-A new vcf with header information will be written to your current directory. 
