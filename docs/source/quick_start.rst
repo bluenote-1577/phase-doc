@@ -14,7 +14,7 @@ In summary:
    
 #. We offer a precompiled executable for linux 
 
-   *  Should work for > 95% of linux users (requires AVX-2 SIMD instructions that most modern CPUs have)
+   *  Should work for > 99% of linux users 
 
 #. Conda installation forthcoming 
 
