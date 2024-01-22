@@ -68,7 +68,7 @@ Depending on your version of floria, you should see something like the following
 
 The "Total time ..." line indicates floria has exited successfully. A few lines that may be of interest:
 
-#. The first line indicates what the ``-l`` parameter, the block length. See 
+#. The first line indicates what the ``-l`` parameter, the block length. 
 #. The second line indicates how we estimate the ``-e`` parameter, the baseline error rate. The user can also supply this. 
 #. The line "Final SNP error rate ..." describes the fraction of alleles that are discordant in your final outputs. 
 
