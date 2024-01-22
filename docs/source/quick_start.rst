@@ -49,7 +49,7 @@ If you've cloned the github repository, try the following command to run floria.
    ls example_output
 
    #visualize phasings, see Utility scripts on the sidebar for installation information
-   #pip install narsort matplotlib numpy
+   #pip install natsort matplotlib numpy
    python scripts/visualize_vartigs.py example_output/NZ_CP081897.1/NZ_CP081897.1.vartigs
    
 Once floria runs successfully, it should exit without any errors and you should see results in the ``example_output`` folder. 
