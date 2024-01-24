@@ -16,7 +16,9 @@ In summary:
 
    *  Should work for > 99% of linux users 
 
-#. Conda installation forthcoming 
+#. Conda 
+
+  *  `conda install -c bioconda floria`
 
 Basic run
 ---------
