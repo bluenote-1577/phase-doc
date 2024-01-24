@@ -4,7 +4,7 @@ Introduction
 What is floria?
 --------------
 
-In microbial communities, strain-level genomic heteogeneity is often present. For example, not all E. coli in a human gut may have the exact same genome; slight variations are common.
+In microbial communities, strain-level genomic heterogeneity is often present. For example, not all E. coli in a human gut may have the exact same genome; slight variations are common.
 
 When we have two distinct E. coli populations, our community contains two strains. The term strain is somewhat ambiguous, but we will consider a strain to be the genome of a clonal population, all having "similar" genomes. During community sequencing, the reads may originate from either of the two different E. coli strains.
 
