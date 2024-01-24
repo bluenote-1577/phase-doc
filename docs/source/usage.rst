@@ -15,7 +15,7 @@ Usage: input and output information
 Mandatory inputs
 -------
 
-*   ``-b sorted-and-indexed.bam``: **Sorted** and **indexed** bam file (i.e. samtools sort, samtools index). Can be either paired-end short reads or long-reads. We assume one primary alignment per read, unique read names, and use MAPQs. Mainly tested with minimap2, but standard read aligners should be fine (i.e. one primary aligment per read, supplementary flags, reasonable 0-60 MAPQs). 
+*   ``-b sorted-and-indexed.bam``: **Sorted** and **indexed** bam file (i.e. samtools sort, samtools index). Can be either paired-end short reads or long-reads. We assume one primary alignment per read, unique read names, and use MAPQs. Mainly tested with minimap2, but standard read aligners should be fine (i.e. one primary alignment per read, supplementary flags, reasonable 0-60 MAPQs). 
 
 *   ``-v vcf-with-header.vcf``: VCF with header info and SNPs. Only SNPs are considered in the vcf. Works with gzipped, bgzipped vcfs as well. 
 
@@ -137,7 +137,7 @@ You can find additional vartig information in the ``out-dir/contig/vartig_info.t
     6:2217  0       0:28
     7:2220  0       0:29
 
-The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the conensus is 1 for SNP 3. 
+The lines after the header are of the form ``snp_number:base    consensus_allele    NA_or_allele_and_support``. The first two columns are straightforward. The third column indicates how strongly each allele is supported. For example, SNP 2 has only 1 read supporting the 1 allele. SNP 3 has 1 read supporting the 0 allele ``(0:1)`` and it has 2 reads supporting the 1 allele ``(1:2)``, hence why the consensus is 1 for SNP 3. 
 
 .. _contig_ploidy_info:
 
@@ -171,7 +171,7 @@ Interpreting the strain count information
 
 See :doc:`how-to-guides/htg2` for more insights on how to interpret the strain count information.
 
-**tldr:** look at ``average_global_straincount`` for the number of strains, make sure ``whole_contig_multiplicity`` is high enough so your phasing is not spurious, and you can be more confident when the coverage is high as well. 
+**tldr:** look at ``average_global_straincount`` for the number of strains, and make sure ``whole_contig_multiplicity`` is high enough so your phasing is not spurious, and you can be more confident when the coverage is high as well. 
 
 .. _read-outputs:
 
@@ -182,9 +182,9 @@ If you specify the ``--output-reads option``:
 
 #. Reads will be output in the ``out-dir/long_reads`` or ``out-dir/short_reads folders``. 
 #. Paired-end reads are placed in the short_reads folder, and single-end reads are in the long-reads folders (even for short single-end reads). 
-#. A special file ``out-dir/long_reads/snpless_reads.fastq`` represent reads that pass filtering thresholds but reside in blocks on the reference that have little to no variation (i.e. from ``reads_without_snps.tsv``. If you attempt to phase a genome with almost no variation (e.g. only false positive, scattered SNPs) then most of your reads will be here. 
+#. A special file ``out-dir/long_reads/snpless_reads.fastq``represents reads that pass filtering thresholds but reside in blocks on the reference that have little to no variation (i.e. from ``reads_without_snps.tsv``. If you attempt to phase a genome with almost no variation (e.g. only false positive, scattered SNPs) then most of your reads will be here. 
 
-For example, the file ``1_part.fastq`` contains all of the reads in fastq format for the 1th haplotype, also labeled as HAP1 in other files.
+For example, the file ``1_part.fastq`` contains all of the reads in fastq format for the 1st haplotype, also labeled as HAP1 in other files.
 
 Importantly, **long-reads are trimmed against the haplosets**. For example, consider a read of length 1500 that is mapped from [200,1700] on the contig. If this read is part of HAP1, and HAP1's BASERANGE is 500-1000, we only output the portions of the read that are mapped between [500,1000] on the genome. This approach helps to prevent poor assemblies near the edges of the haplosets.
 
