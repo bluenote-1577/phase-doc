@@ -1,7 +1,7 @@
 Utility scripts
 ==============
 
-floria comes with some utillity scripts that are useful for visualizing results. These scripts can be found in ``floria/scripts`` in floria's github repository: https://github.com/bluenote-1577/floria.
+floria comes with some utility scripts that are useful for visualizing results. These scripts can be found in ``floria/scripts`` in floria's github repository: https://github.com/bluenote-1577/floria.
 
 Requirements
 ------------
