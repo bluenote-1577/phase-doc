@@ -17,7 +17,7 @@ Given a bam and a vcf file, floria clusters reads into strain-level clusters. fl
 #. A multitude of downstream information for interpreting clusters, including
 
    *  haplotagging reads for viewing in `IGV <https://software.broadinstitute.org/software/igv/>`_.
-   *  summary statistics, such as putative number of strains for each contig, HAPQ -- an analogue of MAPQ for haplotyping quality, etc
+   *  summary statistics, such as putative number of strains for each contig, HAPQ -- an analog of MAPQ for haplotyping quality, etc
 
 To get started, check out the table of contents below. 
 
