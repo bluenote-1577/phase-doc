@@ -63,4 +63,4 @@ What floria **can not** do:
 #.  Guarantee contig-length haplotypes. floria tries to give the longest possible *correct* haplotypes, but is not guaranteed to be contig length. 
 #.  Too many strains at once. floria was designed to phase not more than single digit number of strains (maximum 5 by default). 
 #.  Call SNPs or map reads. To generate your VCF + BAM, you need to map reads and call variants by yourself. 
-#.  floria does not give base-level assemblies. However, you can run an assembler on each of the output haplosets quite easily. 
+#.  floria does not give base-level assemblies. However, you can run an assembler on each of the output haplosets quite easily. Alternatively, see the "Production" pipeline https://github.com/jsgounot/Floria_analysis_workflow for a pipeline that turns floria into an end-to-end assembler. 
