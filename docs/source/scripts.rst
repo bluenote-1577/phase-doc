@@ -1,15 +1,18 @@
-Vartig-utils for mapping vartigs
+Utility scripts and visualization
 ============================
+
+Vartig-utils for mapping vartigs
+------------------------------
 
 See the repository (https://github.com/bluenote-1577/vartig-utils) if you're interested in comparing vartigs across samples (but using the same VCF file). 
 
 Visualization scripts
-==================
+---------------------
 
 floria comes with some utility scripts that are useful for visualizing results. These scripts can be found in ``floria/scripts`` in floria's github repository: https://github.com/bluenote-1577/floria.
 
 Requirements
-------------
+^^^^^^^^^^^^
 
 All scripts below use python3 and require the following standard dependencies (can be installed by ``pip install ...``)
 
@@ -18,7 +21,7 @@ All scripts below use python3 and require the following standard dependencies (c
 #. natsort (https://pypi.org/project/natsort/)
 
 visualize_vartigs.py
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 Very useful script for quickly visualizing output vartigs. 
 
@@ -34,7 +37,7 @@ Each line is a vartig passing certain thresholds. The top plot is colored by the
     python visualize_vartigs.py floria_out_dir/contig1/contig1.vartigs -q 15 -c 50 -l 10000
 
 haplotag_output_dir.py
----------------------
+^^^^^^^^^^^^^^^^^^^^^
 
 If you want to visualize floria's output phasings in the IGV, use this script. This adds a ``HP:i`` tag to the same BAM file that was input to floria for all reads in contigs that were successfully phased by floria. 
 
@@ -51,7 +54,7 @@ If you want to visualize floria's output phasings in the IGV, use this script. T
 For an example of how to visualize this output bam file, see :doc:`tutorials/tut1`. 
     
 haplotag_bam.py  
-----------------
+^^^^^^^^^^^^^^^
 
 This script does the same thing as haplotag_output_dir.py, but you can specify exactly which contig to haplotag. 
 
