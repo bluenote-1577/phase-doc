@@ -89,11 +89,11 @@ contig_ploidy_info.tsv
    contig	average_straincount	whole_contig_multiplicity	approximate_coverage_ignoring_indels	total_vartig_bases_covered	average_straincount_min15hapq	average_straincount_min30hapq	average_straincount_min45hapq	avg_err
    NZ_CP081897.1	3.000	0.068	79.601	354838	2.984	2.984	1.000	0.0555
 
-This file gives information about how many strains appear to be present in our sample. For each contig, a line with information will be present in this file. We only have one contig, so we only get one (non-header) line. 
+This file gives information about how many strains appear to be present in our sample. For each contig, a line will be present in this file. We only have one contig, so we only get one (non-header) line. 
 
 The most important columns are usually columns 2-4. 
 
-#. ``average_global_straincount`` gives a suggestion of how many strains there are. In our case, it looks like there are exactly 3 strains present, which is correct. 
+#. ``average_global_straincount`` suggests how many strains there are. In our case, it looks like there are exactly 3 strains present, which is correct. 
 #. ``whole_contig_multiplicity`` is simply the sum of vartig lengths divided by contig length. Here we have around 360,000 total bases covered by vartigs (column 6), which is good (3 strains x 120,000 bases). The complete genome is about 5 Mb, hence 0.068 is the result -- implying only part of the genome is phased. 
 #. ``approximate_coverage_ignoring_indels`` gives an estimate of the coverage. The true coverage is 110x here, but we only get ~80x coverage. This is because our simulated nanopore reads had a lot of indels, which causes reads skip over alleles, lowering our estimated coverage.  
 
@@ -102,7 +102,7 @@ See :doc:`../how-to-guides/htg2` for more information on interpreting this file.
 NZ_CP081897.1.haplosets
 **********************
 
-For the rest of the files, they are stored in ``example_output/NZ_CP081897.1``. floria outputs results for each individual contig in the bam file. Because we only have one contig, there is only one output folder. Let's start with the ``NZ_CP081897.1.haplosets`` file. 
+For the rest of the files, they are stored in ``example_output/NZ_CP081897.1``. floria outputs results for each contig in the bam file. Because we only have one contig, there is only one output folder. Let's start with the ``NZ_CP081897.1.haplosets`` file. 
 
 The ``*.haplosets`` file is present for every contig phased. This describes the strain-level read clusters output by floria. 
 
@@ -141,9 +141,9 @@ It looks like the first haploset is a small set containing only 3 long-reads, an
 
 .. note::
 
-    Switch errors are a specific type of common error that occurs in haplotype phasing. 
+    HAPQ can be interpreted like MAPQ for reads. E.g. High MAPQ does not indicate high sequence identity, but it indicates a good confident mapping position. 
 
-The technical details of how HAPQ is actually calculated means that it represents only the first interptation, not the second. So our HAPQ is 0; is this fair? Well, it turns out our reads have prefixes which indicate what strain they really came from (because we simulated our reads). As can be seen below:
+So our HAPQ is 0; is this fair? Well, it turns out our reads have prefixes that indicate what strain they came from (because we simulated our reads). As can be seen below:
 
 .. code-block:: sh
 
@@ -182,7 +182,7 @@ The technical details of how HAPQ is actually calculated means that it represent
     pa1_4379        67      73
     ...
 
-It turns out that ``HAP0`` is really a false haplotype after looking at this file in more detail. 
+It turns out that ``HAP0`` is a false haplotype after looking at this file in more detail. 
 
 #. ``HAP1`` is a much longer version of ``HAP0``, capturing the ``nc1`` strain. 
 #. ``HAP2`` captures the ``mn1`` strain.
@@ -193,7 +193,7 @@ so it's good we assumed 0 to the HAPQ.
 NZ_CP081897.1.vartigs
 **********************
 
-Often we don't care about the exact reads in the haploset, but what sequence of alleles are present on the haplotype represented by the haploset. We will call these **vartigs**, which are analogous to contigs but on the variant (SNP) level, not on the base level. This is found in the ``example_output/NZ_CP081897.1/NZ_CP081897.1.vartigs`` file. 
+We may care about the sequence of alleles that are present on the haplotype represented by the haploset. We will call these **vartigs**, which are analogous to contigs but on the variant (SNP) level, not on the base level. This is found in the ``example_output/NZ_CP081897.1/NZ_CP081897.1.vartigs`` file. 
 
 .. code-block:: sh
 
@@ -214,11 +214,11 @@ The header info in the vartig file is in the same format. However, instead of re
 #. The allele ``1`` represents the first alternate allele. ``2`` would represent the second, and so forth. 
 #. The allele ``?`` represents no reads in that haploset cover the allele, so it is unknown. 
 
-We truncated the vartigs in the above output, but HAP1 has almost all alleles ``1`` in the range [1,954], whereas HAP2 has ``0`` on almost all alleles. HAP4 is a mix of ``0`` and ``1``. This makes sense; it turns out **we took reads from the reference genome MN-03.fa for the strains captured by HAP2**, so it makes sense that HAP2 is almost all reference (any ``1`` alleles for HAP2 would be errors). 
+We truncated the vartigs in the above output, but HAP1 has almost all alleles ``1`` in the range [1,954], whereas HAP2 has ``0`` on almost all alleles. HAP4 is a mix of ``0`` and ``1``. This makes sense; it turns out **the reads in HAP2 are simulated from the reference genome MN-03.fa**, so it makes sense that HAP2 is almost all reference (any ``1`` alleles for HAP2 would be errors). 
 
 .. note::
 
-    Notice that the ERR for the vartigs increase as the number of alternate alleles increase. This is called **reference bias**; SNP calls are biased towards the reference, so true alternate alleles are called less often. 
+    Notice that the ERR for the vartigs increases as the number of alternate alleles increases. This is called **reference bias**; SNP calls are biased towards the reference, so true alternate alleles are called less often. 
 
 reads_without_snps.tsv
 ********************
@@ -238,7 +238,7 @@ By default, floria only outputs read ids for the phased haplosets. If you want t
 
 .. code-block:: sh
 
-   # need to specify --ovewrite and --output-reads
+   # need to specify --overwrite and --output-reads
    floria --overwrite --output-reads -b tests/test_long.bam -v tests/test.vcf -r tests/MN-03.fa -o example_output
 
 and now the reads appear like ``example_output/NZ_CP081897.1/long_reads/2_part.txt``. These are the reads corresponding to HAP2. Importantly, these reads are **trimmed** against the haploset and may not represent the original reads. See :ref:`read-outputs` for more information. 
@@ -250,18 +250,17 @@ Visualizing vartigs/haplosets
   :width: 450
   :alt: floria visualization example.
 
-To visualize your vartigs, we provide a script called ``visualize_vartigs.py`` in the following repository: https://github.com/bluenote-1577/vartig-utils. You will need numpy and matplotlib installed. Simply run:
+To visualize your vartigs, we provide a script called ``visualize_vartigs.py`` in the following repository ``scripts`` folder of the floria github repository. You will need numpy and matplotlib installed. Simply run:
 
 .. code-block:: sh
 
-    git clone https://github.com/bluenote-1577/vartig-utils
-    python vartig-utils/visualize_vartigs.py
+    python scripts/visualize_vartigs.py example_output/NZ_CP081897.1/NZ_CP081897.1.vartigs
 
 You should see the above figure. In a nutshell:
 
 #. Each bar represents a vartig with HAPQ > 0. 
 #. The y-axis represents the COV for the vartig, and the x-axis represents the BASERANGE of the vartig.
-#. The upper plot colors the vartig by alternate allele fraction. That is, what precentage of the vartig contains non ``0`` alleles. 
+#. The upper plot colors the vartig by alternate allele fraction. That is, what percentage of the vartig contains non ``0`` alleles. 
 #. The lower plot colors the vartig by HAPQ. 
 
 We have three true strains here, which are well represented by this plot. 
