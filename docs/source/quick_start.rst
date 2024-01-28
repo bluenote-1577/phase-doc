@@ -18,7 +18,7 @@ In summary:
 
 #. Conda 
 
-  *  conda install -c bioconda floria
+  * Floria is also available through bioconda. 
 
 Basic run
 ---------
