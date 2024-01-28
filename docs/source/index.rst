@@ -1,23 +1,15 @@
 floria - metagenomic read-based strain phasing
 ===================================
 
-floria is a software package for strain-level phasing of metagenomic shotgun sequencing samples. 
+floria is a software package for strain-level phasing of metagenomic sequencing samples. 
 
-Given a bam and a vcf file, floria clusters reads into strain-level clusters. floria offers the following:
+Given a BAM and a VCF file, floria clusters reads into strain-level clusters. Floria can:
 
-#. Minimal parameter tuning and **automatic determination of strain number**
-
-#. Works with both **short** or **long** reads
-
-#. Can phase entire metagenomic communities,
-
-   *  up to tens of gigabases of reads in less than a day with reasonable RAM (< 20 GB), depending on # of threads
-   *  phase a single organism at high depth in minutes 
-
-#. A multitude of downstream information for interpreting clusters, including
-
-   *  haplotagging reads for viewing in `IGV <https://software.broadinstitute.org/software/igv/>`_.
-   *  summary statistics, such as putative number of strains for each contig, HAPQ -- an analog of MAPQ for haplotyping quality, etc
+* Works with **short** or **noisy long** reads (preferably long)
+* Phase **metagenomic assemblies** or **single genomes**
+* Multithreaded, takes minutes per contig/genome
+* Minimal parameter tuning and **automatic determination of strain number**
+* Give **informative visualizations and summary statistics**
 
 To get started, check out the table of contents below. 
 
