@@ -1,5 +1,10 @@
-Utility scripts
-==============
+Vartig-utils for mapping vartigs
+============================
+
+See the repository (https://github.com/bluenote-1577/vartig-utils) if you're interested in comparing vartigs across samples (but using the same VCF file). 
+
+Visualization scripts
+==================
 
 floria comes with some utility scripts that are useful for visualizing results. These scripts can be found in ``floria/scripts`` in floria's github repository: https://github.com/bluenote-1577/floria.
 
