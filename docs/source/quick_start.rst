@@ -18,7 +18,7 @@ In summary:
 
 #. Conda 
 
-  *  `conda install -c bioconda floria`
+  *  conda install -c bioconda floria
 
 Basic run
 ---------
