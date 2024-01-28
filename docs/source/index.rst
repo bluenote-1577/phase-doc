@@ -6,7 +6,7 @@ floria is a software package for strain-level phasing of metagenomic sequencing 
 Given a BAM and a VCF file, floria clusters reads into strain-level clusters. Floria can:
 
 * Works with **short** or **noisy long** reads (preferably long)
-* Phase **metagenomic assemblies** or **single genomes**
+* Phase **metagenomic reads** or **single genome reads**
 * Multithreaded, takes minutes per contig/genome
 * Minimal parameter tuning and **automatic determination of strain number**
 * Give **informative visualizations and summary statistics**
