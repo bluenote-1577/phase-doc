@@ -1,6 +1,11 @@
 Utility scripts and visualization
 ============================
 
+Binning of haplosets
+--------------------
+
+See https://github.com/maxibor/floria-strainer (developed by Maxime Borry at Max Planck) if you're interested in _binning_ haplosets based coverages to create larger haplosets. 
+
 Vartig-utils for mapping vartigs
 ------------------------------
 
@@ -57,4 +62,6 @@ haplotag_bam.py
 ^^^^^^^^^^^^^^^
 
 This script does the same thing as haplotag_output_dir.py, but you can specify exactly which contig to haplotag. 
+
+
 
