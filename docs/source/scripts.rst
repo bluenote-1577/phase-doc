@@ -4,7 +4,7 @@ Utility scripts and visualization
 Binning of haplosets
 --------------------
 
-See https://github.com/maxibor/floria-strainer (developed by Maxime Borry at Max Planck) if you're interested in _binning_ haplosets based coverages to create larger haplosets. 
+See https://github.com/maxibor/floria-strainer (developed by Maxime Borry at Max Planck) if you're interested in creating larger haplosets by binning haplosets using coverages.
 
 Vartig-utils for mapping vartigs
 ------------------------------
